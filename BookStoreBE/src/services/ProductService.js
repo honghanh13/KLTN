@@ -124,10 +124,6 @@ const getAllProduct = (limit , page, sort, filter) => {
         });
       }
 
-
-
-
-
       if(sort){
         const objectSort = {}
         objectSort[sort[1]]=sort[0]

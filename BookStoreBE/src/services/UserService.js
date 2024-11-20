@@ -37,21 +37,22 @@ const createUser = (newUser) => {
 
 const loginUser = (userLogin) => {
   return new Promise(async (resolve, reject) => {
-    const { name, email, password, confirmPassword, phone } = userLogin;
+    const { email, password } = userLogin;
     try {
       const checkUser = await User.findOne({
         email: email,
       });
       if (checkUser === null) {
         resolve({
-          status: "OK",
+          status: "ERR",
           message: "The user is not defined",
         });
       }
       const comparePassword = bcrypt.compareSync(password, checkUser.password);
+
       if (!comparePassword) {
         resolve({
-          status: "OK",
+          status: "ERR",
           message: "The password or user is incorrect",
         });
       }
@@ -59,11 +60,12 @@ const loginUser = (userLogin) => {
         id: checkUser.id,
         isAdmin: checkUser.isAdmin,
       });
+
       const refresh_token = await genneralRefreshToken({
         id: checkUser.id,
         isAdmin: checkUser.isAdmin,
       });
-      console.log("access_token", access_token);
+
       resolve({
         status: "OK",
         message: "SUCCESS",
@@ -75,7 +77,6 @@ const loginUser = (userLogin) => {
     }
   });
 };
-
 const updateUser = (id, data) => {
   return new Promise(async (resolve, reject) => {
     try {

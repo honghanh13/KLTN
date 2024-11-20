@@ -3,12 +3,30 @@ import React from "react";
 import { WrapperHeader, WrapperHeaderAccout, WrappertextHeader, WrappertextHeaderSmall } from "./Style";
 import { UserOutlined, CaretDownOutlined,ShoppingCartOutlined } from "@ant-design/icons";
 import ButtonInputSeach from "../ButtonInputSeach/ButtonInputSeach";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import * as UserService from "../../Service/UserService";
+import { resetUser } from "../../redux/slides/userSlide";
+
 const HeaderComponent = () => {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    await UserService.logoutUser();
+    dispatch(resetUser());
+    handleNavigatelogin();
+  };
+  const handleNavigatelogin = () => {
+    navigate("/sign-in");
+  };
+  const user = useSelector((state) => state?.user)
   return (
     <div style={{width: '100%', background: 'rgb(26, 148,255)', display:'flex', justifyContent:'center'}}>
       <WrapperHeader>
         <Col span={5}>
-          <WrappertextHeader>Văn phòng phẩm</WrappertextHeader>
+          <WrappertextHeader onClick={() => navigate('/')}>Văn phòng phẩm</WrappertextHeader>
         </Col>
         <Col span={13}>
           <ButtonInputSeach
@@ -24,15 +42,18 @@ const HeaderComponent = () => {
           <WrapperHeaderAccout>
             <UserOutlined style={{ fontSize: "30px" }} />
             <div>
-              <WrappertextHeaderSmall>Đăng kí/Đăng nhập</WrappertextHeaderSmall>
+              {user?.name != '' ? (<>{user?.name}</>) : ( <WrappertextHeaderSmall onClick={() => navigate("/sign-in")}>Đăng kí/Đăng nhập</WrappertextHeaderSmall>) }
+             
               <div>
                 <WrappertextHeaderSmall>Tài khoản</WrappertextHeaderSmall>
                 <CaretDownOutlined />
+                <WrappertextHeaderSmall onClick={handleLogout}>Đăng xuất</WrappertextHeaderSmall>
+
               </div>
             </div>
           </WrapperHeaderAccout>
           <div>
-            <Badge count={4} size={"smaill"}> 
+            <Badge count={5} size={"smaill"}> 
               <ShoppingCartOutlined style={{ fontSize: "30px", color:'#fff' }}/>
             </Badge>
             <WrappertextHeaderSmall>Giỏ hàng</WrappertextHeaderSmall>

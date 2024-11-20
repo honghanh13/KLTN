@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const authMiddleware = (req, res, next) => {
-  const token = req.headers.token.split(' ')[1]
+const authMiddleWare = (req, res, next) => {
+  const token = req.headers.token.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
     if (err) {
       return res.status(404).json({
@@ -11,21 +11,19 @@ const authMiddleware = (req, res, next) => {
         status: "ERROR",
       });
     }
-    const { payload } = user
-    if (payload?.isAdmin) {
+    if (user?.isAdmin) {
       next();
     } else {
       return res.status(404).json({
-        message:'The authemtication',
-        status: 'ERROR',
+        message: "The authemtication",
+        status: "ERROR",
       });
     }
   });
 };
 
-const authUserMiddleware = (req, res, next) => {
-  const token = req.headers.token.split(" ")[1]
-  const userId = req.params.id
+const authUserMiddleWare = (req, res, next) => {
+  const token = req.headers.token.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
     if (err) {
       return res.status(404).json({
@@ -33,18 +31,21 @@ const authUserMiddleware = (req, res, next) => {
         status: "ERROR",
       });
     }
-    const { payload } = user;
-    if (payload?.isAdmin || payload?.id === userId) {
+    const userId = req.params.id;
+    if (user?.isAdmin) {
+      next();
+    } else if (user?.id === userId || !user?.isAdmin) {
       next();
     } else {
       return res.status(404).json({
-        message:'The authemtication',
-        status: 'ERROR',
+        message: "The authemtication",
+        status: "ERROR",
       });
     }
   });
 };
+
 module.exports = {
-  authMiddleware,
-  authUserMiddleware
+  authMiddleWare,
+  authUserMiddleWare,
 };
