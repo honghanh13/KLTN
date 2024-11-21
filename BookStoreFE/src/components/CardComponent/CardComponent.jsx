@@ -3,21 +3,24 @@ import { StyleNameProduct, WrapperCardStyle, WrapperDiscountText, WrapperImageSt
 import {StarFilled } from "@ant-design/icons";
 import {logo} from '../../assets/images/logo.webp';
 import { useNavigate } from "react-router-dom";
+import { converPrice } from "../../utils";
 
-const CardComponent = ({name,rating,image,selled,price,discount}) => {
+const CardComponent = ({id,name,rating,image,selled,price,discount}) => {
 
   const navigate = useNavigate();
-  const handleNavigate = () => {
-    navigate(`/product-details/${1}`);
+  
+  const handleDetailsProduct = (id) => {
+    navigate(`/product-details/${id}`);
   };
+
   return (
     <WrapperCardStyle
-    onClick={handleNavigate}
+    onClick={() => handleDetailsProduct(id)}
         hoverable
         headStyle={{width: '200px', height: '200px'}}
         style={{ width: 240 }}
         bodyStyle={{padding:'10px'}}
-        cover={<img alt="example"src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>}
+        cover={<img alt="example"src={image}/>}
     >
 
 
@@ -31,7 +34,7 @@ const CardComponent = ({name,rating,image,selled,price,discount}) => {
           <WrapperStyleTextSell> | Đã bán {selled}+</WrapperStyleTextSell>
           </WrapperReportText>
           <WrapperPriceText>
-            <span style={{marginRight:'8px'}}>{price}</span>
+            <span style={{marginRight:'8px'}}>{converPrice(price)}</span>
             <WrapperDiscountText>
               -{discount}%
             </WrapperDiscountText>
