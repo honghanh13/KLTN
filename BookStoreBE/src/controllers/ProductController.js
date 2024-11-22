@@ -82,20 +82,22 @@ const deleteProduct = async (req, res)=>{
     }
 }
 
-
-const getAllProduct = async (req, res)=>{
-    try{
-        const {limit, page, sort, filter} = req.query
-        const response = await ProductService.getAllProduct(Number(limit)||8, Number(page)||0, sort, filter)
-        return res.status(200).json(response)
-    } catch(e){
+const getAllProduct = async (req, res) => {
+    try {
+        const { limit, page, sort, filter } = req.query;
+        const response = await ProductService.getAllProduct(
+            Number(limit) || 8,
+            Number(page) || 0,
+            sort,
+            filter ? JSON.parse(filter) : null // Chuyển đổi filter từ JSON string về object
+        );
+        return res.status(200).json(response);
+    } catch (e) {
         return res.status(404).json({
-            message:e
-        })
-
+            message: e.message || e
+        });
     }
-}
-
+};
 const getAllType = async (req, res) => {
     try {
         const response = await ProductService.getAllType()

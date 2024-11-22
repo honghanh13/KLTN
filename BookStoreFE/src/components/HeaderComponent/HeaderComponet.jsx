@@ -13,7 +13,7 @@ import {
   DownOutlined,
 } from "@ant-design/icons";
 import ButtonInputSeach from "../ButtonInputSeach/ButtonInputSeach";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as UserService from "../../Service/UserService";
 import { resetUser } from "../../redux/slides/userSlide";
@@ -34,30 +34,27 @@ const HeaderComponent = () => {
     {
       key: "1",
       label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
+        <Link
+          to={'/profile'}
         >
           Thông tin cá nhân
-        </a>
+        </Link>
       ),
     },
     {
       key: "2",
       label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
+        <Link
+          
+          href="#"
         >
           Quản trị hệ thống
-        </a>
+        </Link>
       ),
     },
     {
       key: "3",
-      label: <a onClick={handleLogout}>Đăng xuất</a>,
+      label: <Link onClick={handleLogout}>Đăng xuất</Link>,
     },
   ];
   const user = useSelector((state) => state?.user);

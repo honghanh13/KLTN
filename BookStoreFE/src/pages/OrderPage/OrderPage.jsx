@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Table, Checkbox, InputNumber, Button, Card } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const OrderPage = () => {
   const [quantity, setQuantity] = useState(3); // Số lượng sản phẩm
-
+  const navigate = useNavigate();
   const columns = [
     {
       title: <Checkbox checked>Tất cả (1 sản phẩm)</Checkbox>,
@@ -112,6 +113,7 @@ const OrderPage = () => {
         </div>
         <Button
           type="primary"
+          onClick={() => navigate("/checkout")}
           style={{ marginTop: 20, width: "100%", height: 40 }}
         >
           Mua hàng

@@ -105,56 +105,33 @@ const getDetailsProduct = (id) => {
   });
 };
 
-
-const getAllProduct = (limit , page, sort, filter) => {
+const getAllProduct = (limit, page, sort, filter) => {
   return new Promise(async (resolve, reject) => {
-    try {     
-      const totalProduct = await Product.countDocuments()
-      if(filter){
-        const label =filter[0 ];
-        const allObjectFilter = await Product.find({[label] : {'$regex':filter[1]}}).limit(limit).skip(page*limit)
-        resolve({
-          status: "OK",
-          message: "Success",
-          data: allObjectFilter,
-          total: totalProduct,
-          pageCurrent: Number(page + 1),
-          totalPage: Math.ceil(totalProduct/limit)
-  
-        });
-      }
+      try {
+          const query = {};
 
-      if(sort){
-        const objectSort = {}
-        objectSort[sort[1]]=sort[0]
-        const allProductSort = await Product.find().limit(limit).skip(page*limit).sort(objectSort)
-        resolve({
-          status: "OK",
-          message: "Success",
-          data: allProductSort,
-          total: totalProduct,
-          pageCurrent: Number(page + 1),
-          totalPage: Math.ceil(totalProduct/limit)
-  
-        });
-      
-      }
-        const allProduct = await Product.find().limit(limit).skip(page*limit)
-      resolve({
-        status: "OK",
-        message: "Success",
-        data: allProduct,
-        total: totalProduct,
-        pageCurrent: Number(page + 1),
-        totalPage: Math.ceil(totalProduct/limit)
+          // Nếu có filter, thêm vào query
+          if (filter) {
+              const label = filter[0];
+              query[label] = { '$regex': filter[1], '$options': 'i' }; // Tìm kiếm không phân biệt chữ hoa chữ thường
+          }
 
-      });
-    } catch (e) {
-      reject(e);
-    }
+          const totalProduct = await Product.countDocuments(query); // Đếm tổng sản phẩm theo query
+          const allProduct = await Product.find(query).limit(limit).skip(page * limit).sort(sort ? { [sort[1]]: sort[0] } : {});
+
+          resolve({
+              status: "OK",
+              message: "Success",
+              data: allProduct,
+              total: totalProduct,
+              pageCurrent: Number(page + 1),
+              totalPage: Math.ceil(totalProduct / limit)
+          });
+      } catch (e) {
+          reject(e);
+      }
   });
 };
-
 const getAllType = () => {
   return new Promise(async (resolve, reject) => {
     try {

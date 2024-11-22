@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { useDebounce } from "../../hooks/useDebounce";
 const HomePage = () => {
   const [listType, setListType] = useState([]);
+  const [selectedType, setSelectedType] = useState(null);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(1);
   const [sort, setSort] = useState(null);
@@ -71,6 +72,17 @@ const HomePage = () => {
     setIsLoading(false); // Kết thúc tải
   };
 
+  const handleTypeSelect = async (type) => {
+    setSelectedType(type); // Cập nhật thể loại đã chọn
+    setPage(0); // Đặt lại trang về 0
+    setIsLoading(true); // Bắt đầu tải
+  
+    // Gọi API với filter là thể loại đã chọn
+    const res = await ProductService.getAllProduct(0, limit, sort, [type, null]);
+    setStateProducts(res?.data || []);
+    setTotalPages(Math.ceil(res?.total / limit)); // Cập nhật tổng số trang
+    setIsLoading(false); // Kết thúc tải
+  };
   console.log("stateProducts",stateProducts)
 
   return (
@@ -78,7 +90,7 @@ const HomePage = () => {
       <div style={{ width: "1270px", margin: "0 auto" }}>
         <WrapperTypeProduct>
           {listType.map((item) => {
-            return <TypeProduct name={item} key={item} />;
+            return <TypeProduct name={item} key={item}  onClick={() => handleTypeSelect(item)} />;
           })}
         </WrapperTypeProduct>
       </div>

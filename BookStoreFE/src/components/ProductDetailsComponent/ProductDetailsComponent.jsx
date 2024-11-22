@@ -1,11 +1,8 @@
 import { Col, Image, InputNumber, Rate, Row } from "antd";
 import React, { useEffect, useState } from "react";
 
-import imageProduct from "../../assets/images/test.webp";
-import imageProductSmall from "../../assets/images/imagesmall.webp";
 import {
   WrapperAddressProduct,
-  WrapperBtnQualityProduct,
   WrapperInputNumber,
   WrapperPriceProduct,
   WrapperPriceTextProduct,
@@ -121,11 +118,7 @@ const ProductDetailsComponent = ({ id }) => {
         span={10}
         style={{ borderRight: "1px solid #e5e5e5", paddingRight: "8px" }}
       >
-        <Image
-          src={productDetails?.image}
-          alt="image product"
-          preview={true}
-        />
+        <Image src={productDetails?.image} alt="image product" preview={true} />
         <Row style={{ paddingTop: "10px", justifyContent: "space-between" }}>
           <WrapperStyleColImage span={4}>
             <WrapperStyleImageSmall
@@ -189,8 +182,8 @@ const ProductDetailsComponent = ({ id }) => {
         </WrapperPriceProduct>
         <WrapperAddressProduct>
           <span> Giao đến </span>
-          <span className="address"> Q. 1, P. Bến Nghé, Hồ Chí Minh</span>
-          <span className="change-address"> - Đổi địa chỉ</span>
+          <span className="address"> {user?.address}</span>
+          <span className="change-address" style={{cursor:"pointer"}} onClick={() => navigate('/profile')}> - Đổi địa chỉ</span>
         </WrapperAddressProduct>
         <div
           style={{
@@ -220,11 +213,10 @@ const ProductDetailsComponent = ({ id }) => {
                 size="10"
               />
             </button>
-       
           </WrapperQualityProduct>
-          <div style={{marginTop:"10px"}}>
-              Còn lại {productDetails?.countInStock} sản phẩm
-            </div>
+          <div style={{ marginTop: "10px" }}>
+            Còn lại {productDetails?.countInStock} sản phẩm
+          </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <ButtonComponent

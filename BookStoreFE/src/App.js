@@ -5,7 +5,6 @@ import {BrowserRouter as Router, Routes,Route} from 'react-router-dom'
 import { routes } from './routes'
 import DefaultComPonent from './components/DefaultComponent/DefaultComPonent'
 import LoadingComponent from './components/LoadingComponent/LoadingComponent'
-import axios from 'axios'
 import * as UserService from "./Service/UserService";
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser } from './redux/slides/userSlide'
@@ -21,7 +20,6 @@ function App() {
   const handleGetDetailUser = async (id, token) => {
     try{
       const res = await UserService.getDetailsUser(id, token);
-      console.log('res',res)
       dispatch(updateUser({ ...res?.data, access_token: token }));
     }catch(e){
       console.log("Error getting details",e)
@@ -42,8 +40,8 @@ function App() {
     async (config) => {
       // Do something before request is sent
       const currentTime = new Date();
-      const { decoded } = handleDecoded();
-      if (decoded?.payload.exp < currentTime.getTime() / 1000) {
+      const { decoded,storageData } = handleDecoded();
+      if (decoded?.exp < currentTime.getTime() / 1000) {
         const data = await UserService.refreshToken();
         config.headers["token"] = `Bearer ${data?.access_token}`;
       }
@@ -57,12 +55,14 @@ function App() {
 
   useEffect(() => {
     const { storageData, decoded } = handleDecoded();
-    if (decoded?.payload.id) {
-      handleGetDetailUser(decoded?.payload.id, storageData);
+    if (decoded?.id) {
+      handleGetDetailUser(decoded?.id, storageData);
     } else {
       console.log("user not found");
     }
   }, []);
+
+
  
   return (
     
