@@ -25,7 +25,7 @@ const SignInPage = () => {
   const [loginError, setLoginError] = useState(null);
   const mutation = useMutationHooks((data) => UserService.loginUser(data));
   const { data, isSuccess, isError, error } = mutation;
-
+console.log('data',data)
   useEffect(() => {
     if (isSuccess && data?.status === "OK") {
       message.destroy();
@@ -44,7 +44,7 @@ const SignInPage = () => {
         const decoded = jwtDecode(data?.access_token);
 
         if (decoded?.id) {
-          handleGetDetailUser(decoded?.id, data?.access_token);
+          handleGetDetailUser(decoded?.id, data?.access_token, data?.refresh_token);
         }
       }
     } else if (isError || (isSuccess && data?.status === "ERR")) {
@@ -52,9 +52,9 @@ const SignInPage = () => {
     }
   }, [isSuccess, isError, error, data, navigate]);
 
-  const handleGetDetailUser = async (id, token) => {
+  const handleGetDetailUser = async (id, token,refresh_token) => {
     const res = await UserService.getDetailsUser(id, token);
-    dispatch(updateUser({ ...res?.data, access_token: token }));
+    dispatch(updateUser({ ...res?.data, access_token: token ,refreshToken: refresh_token  }));
   };
 
   const handleSignIn = (e) => {

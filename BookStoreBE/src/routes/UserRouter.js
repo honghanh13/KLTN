@@ -9,7 +9,7 @@ router.put('/update-user/:id', userController.updateUser)
 router.delete('/delete-user/:id' ,userController.deleteUser)
 router.get('/getAll',userController.getAllUser)
 router.get('/get-details/:id', authUserMiddleWare,userController.getDetailsUser)
-router.post('/refresh-token', authUserMiddleWare, userController.refreshToken)
+router.post('/refresh-token', userController.refreshToken)
 router.post('/log-out', userController.logoutUser)
 
 module.exports = router

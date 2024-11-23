@@ -1,4 +1,6 @@
 {
+  "allowedHosts": "all",
+  "proxy": "http://localhost:3001",
   "name": "shopdt",
   "version": "0.1.0",
   "private": true,

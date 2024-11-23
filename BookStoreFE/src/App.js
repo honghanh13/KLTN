@@ -16,6 +16,7 @@ import { Spin } from 'antd'
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  console.log("user",user)
 
   const handleGetDetailUser = async (id, token) => {
     try{
@@ -40,7 +41,7 @@ function App() {
     async (config) => {
       // Do something before request is sent
       const currentTime = new Date();
-      const { decoded,storageData } = handleDecoded();
+      const { decoded } = handleDecoded();
       if (decoded?.exp < currentTime.getTime() / 1000) {
         const data = await UserService.refreshToken();
         config.headers["token"] = `Bearer ${data?.access_token}`;
@@ -61,7 +62,6 @@ function App() {
       console.log("user not found");
     }
   }, []);
-
 
  
   return (
