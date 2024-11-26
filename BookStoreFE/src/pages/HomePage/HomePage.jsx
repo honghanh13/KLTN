@@ -12,16 +12,14 @@ import slider2 from "../../assets/images/slider2.jpeg";
 import slider3 from "../../assets/images/slider3.png";
 import CardComponent from "../../components/CardComponent/CardComponent";
 import * as ProductService from "../../Service/ProductService";
-import { useQuery } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
-import { useDebounce } from "../../hooks/useDebounce";
+
 const HomePage = () => {
   const [listType, setListType] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(1);
   const [sort, setSort] = useState(null);
-  const [filter, setFilter] = useState(null);
+  const [filter, setFilter] = useState(["type", ""]);
   const [totalPages, setTotalPages] = useState(0);
   // const searchProduct = useSelector((state) => state?.product.search);
   // const searchDebounce = useDebounce(searchProduct, 1000);
@@ -73,26 +71,43 @@ const HomePage = () => {
   };
 
   const handleTypeSelect = async (type) => {
-    setSelectedType(type); // Cập nhật thể loại đã chọn
-    setPage(0); // Đặt lại trang về 0
-    setIsLoading(true); // Bắt đầu tải
-  
-    // Gọi API với filter là thể loại đã chọn
-    const res = await ProductService.getAllProduct(0, limit, sort, [type, null]);
+    setSelectedType(type);
+    setPage(0);
+    setFilter(["type", type.toString()]);
+    setIsLoading(true);
+
+    const res = await ProductService.getAllProduct(0, limit, sort, filter);
     setStateProducts(res?.data || []);
-    setTotalPages(Math.ceil(res?.total / limit)); // Cập nhật tổng số trang
-    setIsLoading(false); // Kết thúc tải
+    setTotalPages(Math.ceil(res?.total / limit));
+    setIsLoading(false);
   };
-  console.log("stateProducts",stateProducts)
+
+  const handleSetTypeAll = () => {
+    setSelectedType(null);
+    setPage(0);
+    setFilter(["type", ""]);
+    setIsLoading(true);
+  };
 
   return (
     <>
-      <div style={{ width: "1270px", margin: "0 auto" }}>
-        <WrapperTypeProduct>
-          {listType.map((item) => {
-            return <TypeProduct name={item} key={item}  onClick={() => handleTypeSelect(item)} />;
-          })}
-        </WrapperTypeProduct>
+      <div style={{ width: "1270px", margin: "0 auto", padding: 15 }}>
+        <span
+          style={{ padding: "0 10px", cursor: "pointer", fontSize: "14px" }}
+          onClick={handleSetTypeAll}
+        >
+          Tất cả
+        </span>
+        {listType.map((item) => {
+          return (
+            <span
+              style={{ padding: "0 10px", cursor: "pointer", fontSize: "14px" }}
+              onClick={() => handleTypeSelect(item)}
+            >
+              {item}
+            </span>
+          );
+        })}
       </div>
       <div
         className="body"

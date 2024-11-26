@@ -1,4 +1,4 @@
-import { Col, Image, InputNumber, Rate, Row } from "antd";
+import { Col, Image, InputNumber, message, Rate, Row } from "antd";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as ProductService from "../../Service/ProductService";
 import { useQuery } from "@tanstack/react-query";
 import { converPrice } from "../../utils";
-
+import { addOrderProduct } from "../../redux/slides/orderSlide";
 const ProductDetailsComponent = ({ id }) => {
   const navigate = useNavigate();
   const [numProduct, setNumProduct] = useState(1);
@@ -51,6 +51,8 @@ const ProductDetailsComponent = ({ id }) => {
     enabled: !!id,
   });
 
+  console.log('productDetails',productDetails)
+
   useEffect(() => {
     const orderRedux = order?.orderItems?.find(
       (item) => item.product === productDetails?._id
@@ -65,47 +67,47 @@ const ProductDetailsComponent = ({ id }) => {
     }
   }, [numProduct]);
 
-  //   const handleAddOrderProduct = () => {
-  //     if (!user?.id) {
-  //       localStorage.setItem("redirectURL", location.pathname);
-  //       navigate("/SignIn", { state: location?.pathname });
-  //     } else {
-  //       const orderRedux = order?.orderItems?.find(
-  //         (item) => item.product === productDetails?._id
-  //       );
-  //       if (
-  //         orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
-  //         (!orderRedux && productDetails?.countInStock > 0)
-  //       ) {
-  //         dispatch(
-  //           addOrderProduct({
-  //             orderItem: {
-  //               name: productDetails?.name,
-  //               amount: numProduct,
-  //               image: productDetails?.image[0],
-  //               price: productDetails?.price,
-  //               product: productDetails?._id,
-  //               discount: productDetails?.discount,
-  //               countInstock: productDetails?.countInStock,
-  //             },
-  //           })
-  //         );
-  //         message.destroy();
-  //         message
-  //           .open({
-  //             type: "loading",
-  //             content: "Loading...",
-  //             duration: 0.75,
-  //           })
-  //           .then(() =>
-  //             message.success(t("pageProductDetails.addedToCart"), 1.5)
-  //           );
-  //       } else {
-  //         message.destroy();
-  //         message.error(t("pageProductDetails.errorToCart"), 1.5);
-  //       }
-  //     }
-  //   };
+    const handleAddOrderProduct = () => {
+      if (!user?.id) {
+        localStorage.setItem("redirectURL", location.pathname);
+        navigate("/SignIn", { state: location?.pathname });
+      } else {
+        const orderRedux = order?.orderItems?.find(
+          (item) => item.product === productDetails?._id
+        );
+        if (
+          orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
+          (!orderRedux && productDetails?.countInStock > 0)
+        ) {
+          dispatch(
+            addOrderProduct({
+              orderItem: {
+                name: productDetails?.name,
+                amount: numProduct,
+                image: productDetails?.image,
+                price: productDetails?.price,
+                product: productDetails?._id,
+                discount: productDetails?.discount,
+                countInstock: productDetails?.countInStock,
+              },
+            })
+          );
+          message.destroy();
+          message
+            .open({
+              type: "loading",
+              content: "Loading...",
+              duration: 0.75,
+            })
+            .then(() =>
+              message.success('Thêm giỏ hàng thành công', 1.5)
+            );
+        } else {
+          message.destroy();
+          message.error('Có lỗi khi thêm vào giỏ hàng', 1.5);
+        }
+      }
+    };
 
   console.log("productDetails", productDetails);
 
@@ -222,6 +224,7 @@ const ProductDetailsComponent = ({ id }) => {
           <ButtonComponent
             bordered={false}
             size={40}
+            onClick={handleAddOrderProduct}
             styleButton={{
               background: "rgb(255, 57, 69",
               height: "48px",

@@ -1,8 +1,15 @@
 import React from "react";
 import { Card, Button } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const OrderSuccess = () => {
+  const order = useSelector((state) => state.order);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { state } = location;
+  console.log("state", state);
   const handleGoBackHome = () => {
     // Điều hướng về trang chủ hoặc trang sản phẩm
     console.log("Go back to homepage");
@@ -57,15 +64,15 @@ const OrderSuccess = () => {
             marginBottom: 30,
           }}
         >
-          Mã đơn hàng: #123456
+          Mã đơn hàng: {state.orderId}
         </p>
 
         {/* Nút hành động */}
         <div style={{ display: "flex", justifyContent: "center", gap: 20 }}>
-          <Button type="primary" size="large" onClick={handleGoBackHome}>
+          <Button type="primary" size="large" onClick={() => navigate('/')}>
             Về trang chủ
           </Button>
-          <Button type="default" size="large" onClick={handleViewOrders}>
+          <Button type="default" size="large" onClick={() => navigate('/my-order')}>
             Xem đơn hàng
           </Button>
         </div>

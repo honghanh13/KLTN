@@ -16,7 +16,6 @@ import { Spin } from 'antd'
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  console.log("user",user)
 
   const handleGetDetailUser = async (id, token) => {
     try{

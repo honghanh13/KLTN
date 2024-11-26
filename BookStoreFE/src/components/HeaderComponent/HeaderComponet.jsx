@@ -21,7 +21,7 @@ import { resetUser } from "../../redux/slides/userSlide";
 const HeaderComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const order = useSelector((state) => state.order.orderItems);
   const handleLogout = async () => {
     await UserService.logoutUser();
     dispatch(resetUser());
@@ -122,7 +122,7 @@ const HeaderComponent = () => {
             </div>
           </WrapperHeaderAccout>
           <div>
-            <Badge count={5} size={"smaill"}>
+            <Badge count={order?.length} size={"smaill"}>
               <ShoppingCartOutlined
                 onClick={() => navigate("/orders")}
                 style={{ fontSize: "30px", color: "#fff", cursor: "pointer" }}
