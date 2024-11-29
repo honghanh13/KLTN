@@ -5,12 +5,9 @@ import FooterComponent from "../FooterComponent/FooterComponent";
     return (
         <div>
           <HeaderComponent/>
-<<<<<<< Updated upstream
           <div>{children}</div>
-=======
-          {children}
           <FooterComponent/>
->>>>>>> Stashed changes
+
         </div>
     )
   }
