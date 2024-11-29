@@ -259,7 +259,7 @@ const CheckoutPage = () => {
               <span>{converPrice(totalPriceMemo)}</span>
             </div>
             <p style={{ marginTop: 10, fontSize: 12 }}>
-              (Đã bao gồm VAT nếu có)
+              (Đã bao gồm VAT)
             </p>
           </Card>
 

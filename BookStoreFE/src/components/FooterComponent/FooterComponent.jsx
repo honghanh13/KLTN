@@ -61,11 +61,6 @@ const FooterComponent = () => {
             Chúng tôi cung cấp các sản phẩm văn phòng phẩm chất lượng cao, đảm bảo đáp ứng mọi nhu cầu
             của bạn. Hãy ghé thăm cửa hàng để khám phá thế giới dụng cụ học tập và văn phòng đa dạng.
           </FooterText>
-          <SocialIcon>
-            <img src="facebook-icon.png" alt="Facebook" />
-            <img src="instagram-icon.png" alt="Instagram" />
-            <img src="twitter-icon.png" alt="Twitter" />
-          </SocialIcon>
         </Col>
 
         {/* Section 2: Quick Links */}
