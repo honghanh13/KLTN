@@ -123,6 +123,7 @@ const HomePage = () => {
               <h3>Loading...</h3>
             ) : (
               stateProducts?.map((product) => (
+               <>
                 <CardComponent
                   key={product?._id}
                   id={product?._id}
@@ -133,6 +134,37 @@ const HomePage = () => {
                   image={product?.image}
                   selled={product?.selled}
                 />
+                   <CardComponent
+                  key={product?._id}
+                  id={product?._id}
+                  name={product?.name}
+                  rating={product?.rating}
+                  price={product?.price}
+                  discount={product?.discount}
+                  image={product?.image}
+                  selled={product?.selled}
+                />
+                   <CardComponent
+                  key={product?._id}
+                  id={product?._id}
+                  name={product?.name}
+                  rating={product?.rating}
+                  price={product?.price}
+                  discount={product?.discount}
+                  image={product?.image}
+                  selled={product?.selled}
+                />
+                   <CardComponent
+                  key={product?._id}
+                  id={product?._id}
+                  name={product?.name}
+                  rating={product?.rating}
+                  price={product?.price}
+                  discount={product?.discount}
+                  image={product?.image}
+                  selled={product?.selled}
+                />
+                </>
               ))
             )}
           </WrapperProducts>

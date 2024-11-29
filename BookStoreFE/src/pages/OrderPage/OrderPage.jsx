@@ -210,7 +210,7 @@ const OrderPage = () => {
           rowKey="key"
         />
       </Card>
-    <Button size="large">Tiếp tục mua hàng</Button>
+    <Button size="large" onClick={() => navigate("/")}>Tiếp tục mua hàng</Button>
       <Card style={{ maxWidth: 300, marginLeft: "auto" }}>
         <div style={{ marginBottom: 20 }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>

@@ -51,8 +51,6 @@ const ProductDetailsComponent = ({ id }) => {
     enabled: !!id,
   });
 
-  console.log('productDetails',productDetails)
-
   useEffect(() => {
     const orderRedux = order?.orderItems?.find(
       (item) => item.product === productDetails?._id
@@ -67,47 +65,45 @@ const ProductDetailsComponent = ({ id }) => {
     }
   }, [numProduct]);
 
-    const handleAddOrderProduct = () => {
-      if (!user?.id) {
-        localStorage.setItem("redirectURL", location.pathname);
-        navigate("/SignIn", { state: location?.pathname });
-      } else {
-        const orderRedux = order?.orderItems?.find(
-          (item) => item.product === productDetails?._id
+  const handleAddOrderProduct = () => {
+    if (!user?.id) {
+      localStorage.setItem("redirectURL", location.pathname);
+      navigate("/sign-in", { state: location?.pathname });
+    } else {
+      const orderRedux = order?.orderItems?.find(
+        (item) => item.product === productDetails?._id
+      );
+      if (
+        orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
+        (!orderRedux && productDetails?.countInStock > 0)
+      ) {
+        dispatch(
+          addOrderProduct({
+            orderItem: {
+              name: productDetails?.name,
+              amount: numProduct,
+              image: productDetails?.image,
+              price: productDetails?.price,
+              product: productDetails?._id,
+              discount: productDetails?.discount,
+              countInstock: productDetails?.countInStock,
+            },
+          })
         );
-        if (
-          orderRedux?.amount + numProduct <= orderRedux?.countInstock ||
-          (!orderRedux && productDetails?.countInStock > 0)
-        ) {
-          dispatch(
-            addOrderProduct({
-              orderItem: {
-                name: productDetails?.name,
-                amount: numProduct,
-                image: productDetails?.image,
-                price: productDetails?.price,
-                product: productDetails?._id,
-                discount: productDetails?.discount,
-                countInstock: productDetails?.countInStock,
-              },
-            })
-          );
-          message.destroy();
-          message
-            .open({
-              type: "loading",
-              content: "Loading...",
-              duration: 0.75,
-            })
-            .then(() =>
-              message.success('Thêm giỏ hàng thành công', 1.5)
-            );
-        } else {
-          message.destroy();
-          message.error('Có lỗi khi thêm vào giỏ hàng', 1.5);
-        }
+        message.destroy();
+        message
+          .open({
+            type: "loading",
+            content: "Loading...",
+            duration: 0.75,
+          })
+          .then(() => message.success("Thêm giỏ hàng thành công", 1.5));
+      } else {
+        message.destroy();
+        message.error("Có lỗi khi thêm vào giỏ hàng", 1.5);
       }
-    };
+    }
+  };
 
   console.log("productDetails", productDetails);
 
@@ -179,13 +175,27 @@ const ProductDetailsComponent = ({ id }) => {
         </div>
         <WrapperPriceProduct>
           <WrapperPriceTextProduct>
-            {converPrice(productDetails?.price)}
+            {converPrice(discountedPrice)}{" "}
+            <span style={{ color: "#ccc", textDecorationLine: "line-through" }}>
+              {converPrice(productDetails?.price)}
+            </span>{" "}
+            <span style={{ fontSize: "16px" }}>
+              Đã giảm {productDetails?.discount}%
+            </span>
           </WrapperPriceTextProduct>
         </WrapperPriceProduct>
+
         <WrapperAddressProduct>
           <span> Giao đến </span>
           <span className="address"> {user?.address}</span>
-          <span className="change-address" style={{cursor:"pointer"}} onClick={() => navigate('/profile')}> - Đổi địa chỉ</span>
+          <span
+            className="change-address"
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/profile")}
+          >
+            {" "}
+            - Đổi địa chỉ
+          </span>
         </WrapperAddressProduct>
         <div
           style={{
@@ -197,7 +207,14 @@ const ProductDetailsComponent = ({ id }) => {
         >
           <div style={{ marginBottom: "10px" }}>Số lượng</div>
           <WrapperQualityProduct>
-            <button style={{ border: "none", background: "#fff" }}>
+            <button
+              style={{ border: "none", background: "#fff", cursor:"pointer" }}
+              onClick={() => {
+                if (numProduct > 1) {
+                  setNumProduct((prev) => prev - 1);
+                }
+              }}
+            >
               <MinusOutlined
                 style={{ color: "#000", fontSize: "20px", background: "#fff" }}
                 size="10"
@@ -206,16 +223,24 @@ const ProductDetailsComponent = ({ id }) => {
             <WrapperInputNumber
               min={1}
               max={productDetails?.countInStock}
-              defaultValue={1}
+              value={numProduct}
               onChange={onChange}
             />
-            <button style={{ border: "none", background: "#fff" }}>
+            <button
+              style={{ border: "none", background: "#fff", cursor:"pointer" }}
+              onClick={() => {
+                if (numProduct < productDetails?.countInStock) {
+                  setNumProduct((prev) => prev + 1);
+                }
+              }}
+            >
               <PlusOutlined
                 style={{ color: "#000", fontSize: "20px" }}
                 size="10"
               />
             </button>
           </WrapperQualityProduct>
+
           <div style={{ marginTop: "10px" }}>
             Còn lại {productDetails?.countInStock} sản phẩm
           </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Radio, Card, Button, message } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import * as OrderService from "../../Service/OrderService";
@@ -205,7 +205,7 @@ const CheckoutPage = () => {
         <div style={{ width: "50%" }}>
           <Card
             title={`Địa chỉ: ${user?.address}`}
-            extra={<a href="#">Thay đổi</a>}
+            extra={<Link to={"/profile"}>Thay đổi</Link>}
             style={{ marginBottom: 20 }}
           >
             <div style={{ borderBottom: "1px soild #ccc" }}>
