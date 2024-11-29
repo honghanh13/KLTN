@@ -17,7 +17,7 @@ const HomePage = () => {
   const [listType, setListType] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(1);
+  const [limit, setLimit] = useState(5);
   const [sort, setSort] = useState(null);
   const [filter, setFilter] = useState(["type", ""]);
   const [totalPages, setTotalPages] = useState(0);

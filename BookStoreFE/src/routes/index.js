@@ -11,6 +11,8 @@ import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
 import orderSuccess from "../pages/OrderSuccess/OrderSucces"; 
 import UserInfoUpdate from "../pages/ProfilePage/UserInfoUpdate"; 
 import OrderDetails from "../pages/ProfilePage/MyOrderPage"; 
+import AdminPage from "../pages/AdminPage/AdminPage";
+
 export const routes = [
   {
     path: "/",
@@ -72,6 +74,12 @@ export const routes = [
     path: "/my-order",
     page: OrderDetails,
     isShowHeader: true,
+  },
+  {
+    path: "/system/admin",
+    page: AdminPage,
+    isShowHeader: false,
+    isPrivate: true,
   },
   {
     path: "*",

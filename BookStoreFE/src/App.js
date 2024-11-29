@@ -15,12 +15,14 @@ import { Spin } from 'antd'
 
 function App() {
   const dispatch = useDispatch();
+  // const [isLoading, setIsLoading] = useState(false)
   const user = useSelector((state) => state.user);
 
   const handleGetDetailUser = async (id, token) => {
     try{
       const res = await UserService.getDetailsUser(id, token);
       dispatch(updateUser({ ...res?.data, access_token: token }));
+      // setIsLoading(false)
     }catch(e){
       console.log("Error getting details",e)
     }
@@ -54,6 +56,7 @@ function App() {
 
 
   useEffect(() => {
+    // setIsLoading(true)
     const { storageData, decoded } = handleDecoded();
     if (decoded?.id) {
       handleGetDetailUser(decoded?.id, storageData);
@@ -66,6 +69,7 @@ function App() {
   return (
     
     <div>
+      
       <Suspense fallback={<LoadingComponent></LoadingComponent>}>
       <Router>
         <Routes>
@@ -74,10 +78,7 @@ function App() {
             const ischeckAuth = !route.isPrivate || user.isAdmin;
             const Layout = route?.isShowHearder ?  Fragment: DefaultComPonent;
             return (
-              <Route
-                key={route.path}
-                path={ischeckAuth ? route.path : ""}
-                element={
+              <Route key={route.path} path={ischeckAuth ? route.path : ""} element={
                   <Layout>
                     <Page />
                   </Layout>
@@ -88,6 +89,7 @@ function App() {
         </Routes>
       </Router>
       </Suspense>
+      {/* </Loading> */}
     </div>
   )
 }

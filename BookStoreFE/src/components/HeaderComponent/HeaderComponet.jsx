@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as UserService from "../../Service/UserService";
 import { resetUser } from "../../redux/slides/userSlide";
 
-const HeaderComponent = () => {
+const HeaderComponent = ({isHiddenSearch = false, isHiddenCart = false}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const order = useSelector((state) => state.order.orderItems);
@@ -41,12 +41,13 @@ const HeaderComponent = () => {
         </Link>
       ),
     },
+    
     {
       key: "2",
       label: (
         <Link
           
-          href="#"
+        to={'system/admin'}
         >
           Quản trị hệ thống
         </Link>
@@ -67,14 +68,15 @@ const HeaderComponent = () => {
         justifyContent: "center",
       }}
     >
-      <WrapperHeader>
+      <WrapperHeader style ={{justifyContent: isHiddenSearch && isHiddenCart ? 'space-between':'unset'}}>
         <Col span={5}>
           
           <WrappertextHeader style={{ cursor: "pointer" }}  onClick={() => navigate("/")}>
             Văn phòng phẩm
           </WrappertextHeader>
         </Col>
-        <Col span={13}>
+        {!isHiddenSearch && (
+          <Col span={13}>
           <ButtonInputSeach
             size="large"
             bordered={false}
@@ -83,13 +85,14 @@ const HeaderComponent = () => {
 
             // onSearch={onSearch}
           />
-        </Col>
+          </Col>
+        )}
         <Col
           span={6}
           style={{ display: "flex", gap: "20px", alignItems: "center" }}
         >
           <WrapperHeaderAccout>
-            <UserOutlined style={{ fontSize: "30px" }} />
+            <UserOutlined style={{ fontSize: "30px" }}  />
             <div>
               {user?.name !== "" ? (
                 <>{user?.name}</>
@@ -97,6 +100,7 @@ const HeaderComponent = () => {
                 <WrappertextHeaderSmall
                   style={{ cursor: "pointer" }}
                   onClick={() => navigate("/sign-in")}
+                  
                 >
                   Đăng kí/Đăng nhập
                 </WrappertextHeaderSmall>
@@ -121,6 +125,7 @@ const HeaderComponent = () => {
               )}
             </div>
           </WrapperHeaderAccout>
+          {!isHiddenCart && (
           <div>
             <Badge count={order?.length} size={"smaill"}>
               <ShoppingCartOutlined
@@ -128,13 +133,12 @@ const HeaderComponent = () => {
                 style={{ fontSize: "30px", color: "#fff", cursor: "pointer" }}
               />
             </Badge>
-            <WrappertextHeaderSmall
-              style={{ cursor: "pointer" }}
-              onClick={() => navigate("/orders")}
-            >
-              Giỏ hàng
+            <WrappertextHeaderSmall 
+            style={{ cursor: "pointer" }} onClick={() => navigate("/orders")}
+            >Giỏ hàng
             </WrappertextHeaderSmall>
           </div>
+          )}
         </Col>
       </WrapperHeader>
     </div>
