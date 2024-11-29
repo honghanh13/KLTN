@@ -4,7 +4,7 @@ import HeaderComponent from "../HeaderComponent/HeaderComponet";
     return (
         <div>
           <HeaderComponent/>
-          {children}
+          <div>{children}</div>
         </div>
     )
   }

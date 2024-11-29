@@ -20,6 +20,8 @@ import { resetUser } from "../../redux/slides/userSlide";
 
 const HeaderComponent = ({isHiddenSearch = false, isHiddenCart = false}) => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state?.user);
+  console.log("user",user)
   const dispatch = useDispatch();
   const order = useSelector((state) => state.order.orderItems);
   const handleLogout = async () => {
@@ -34,6 +36,7 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart = false}) => {
     {
       key: "1",
       label: (
+        
         <Link
           to={'/profile'}
         >
@@ -42,23 +45,23 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart = false}) => {
       ),
     },
     
-    {
-      key: "2",
-      label: (
-        <Link
-          
-        to={'system/admin'}
-        >
-          Quản trị hệ thống
-        </Link>
-      ),
-    },
+    ...(user?.isAdmin
+      ? [
+          {
+            key: "2",
+            label: (
+              <Link to={"/system/admin"}>
+                Quản trị hệ thống
+              </Link>
+            ),
+          },
+        ]
+      : []),
     {
       key: "3",
       label: <Link onClick={handleLogout}>Đăng xuất</Link>,
     },
   ];
-  const user = useSelector((state) => state?.user);
   return (
     <div
       style={{
