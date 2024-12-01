@@ -2,7 +2,7 @@ const Product = require("../models/ProductModel")
 
 const createProduct = (newProduct) => {
   return new Promise(async (resolve, reject) => {
-    const {name, image, type, price, countInStock, rating, description } = newProduct       
+    const { name, image, type, price, countInStock, rating, description, discount } = newProduct
 
     try {
       const checkProduct = await Product.findOne({
@@ -15,7 +15,7 @@ const createProduct = (newProduct) => {
         });
       }
       const newProduct = await Product.create({
-        name, image, type, price, countInStock, rating, description
+        name, image, type, price, countInStock, rating, description, discount
       });
       if (newProduct) {
         resolve({
@@ -32,32 +32,32 @@ const createProduct = (newProduct) => {
 
 
 const updateProduct = (id, data) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const checkProduct = await Product.findOne({
-          _id: id,
-        });
-        //console.log("checkUser", checkUser)
-        if (checkProduct === null) {
-          resolve({
-            status: "OK",
-            message: "The product is not defined",
-          });
-        }
-        const updatedProduct = await Product.findByIdAndUpdate(id, data, { new: true });
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkProduct = await Product.findOne({
+        _id: id,
+      });
+      //console.log("checkUser", checkUser)
+      if (checkProduct === null) {
         resolve({
           status: "OK",
-          message: "Success",
-          data: updatedProduct,
+          message: "The product is not defined",
         });
-      } catch (e) {
-        reject(e);
       }
-    });
-  };
+      const updatedProduct = await Product.findByIdAndUpdate(id, data, { new: true });
+      resolve({
+        status: "OK",
+        message: "Success",
+        data: updatedProduct,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 
 
-  
+
 const deleteProduct = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -107,29 +107,29 @@ const getDetailsProduct = (id) => {
 
 const getAllProduct = (limit, page, sort, filter) => {
   return new Promise(async (resolve, reject) => {
-      try {
-          const query = {};
+    try {
+      const query = {};
 
-          // Nếu có filter, thêm vào query
-          if (filter) {
-              const label = filter[0];
-              query[label] = { '$regex': filter[1], '$options': 'i' }; // Tìm kiếm không phân biệt chữ hoa chữ thường
-          }
-
-          const totalProduct = await Product.countDocuments(query); // Đếm tổng sản phẩm theo query
-          const allProduct = await Product.find(query).limit(limit).skip(page * limit).sort(sort ? { [sort[1]]: sort[0] } : {});
-
-          resolve({
-              status: "OK",
-              message: "Success",
-              data: allProduct,
-              total: totalProduct,
-              pageCurrent: Number(page + 1),
-              totalPage: Math.ceil(totalProduct / limit)
-          });
-      } catch (e) {
-          reject(e);
+      // Nếu có filter, thêm vào query
+      if (filter) {
+        const label = filter[0];
+        query[label] = { '$regex': filter[1], '$options': 'i' }; // Tìm kiếm không phân biệt chữ hoa chữ thường
       }
+
+      const totalProduct = await Product.countDocuments(query); // Đếm tổng sản phẩm theo query
+      const allProduct = await Product.find(query).limit(limit).skip(page * limit).sort(sort ? { [sort[1]]: sort[0] } : {});
+
+      resolve({
+        status: "OK",
+        message: "Success",
+        data: allProduct,
+        total: totalProduct,
+        pageCurrent: Number(page + 1),
+        totalPage: Math.ceil(totalProduct / limit)
+      });
+    } catch (e) {
+      reject(e);
+    }
   });
 };
 const getAllType = () => {
@@ -148,12 +148,12 @@ const getAllType = () => {
 };
 
 module.exports = {
-    createProduct,
-    updateProduct,
-    getDetailsProduct,
-    deleteProduct,
-    getAllProduct,
-    getAllType
-  
-  
+  createProduct,
+  updateProduct,
+  getDetailsProduct,
+  deleteProduct,
+  getAllProduct,
+  getAllType
+
+
 };
