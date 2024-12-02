@@ -186,7 +186,7 @@ const cancelOrderDetails = (id, data) => {
         if (!productData) {
           return {
             status: "ERR",
-            message: `San pham voi id ${orderItem.product} khong ton tai hoac so luong khong du`,
+            message: `Sản phẩm với ID ${orderItem.product} không tồn tại hoặc số tồn không đủ`,
             id: orderItem.product,
           };
         }
@@ -208,13 +208,13 @@ const cancelOrderDetails = (id, data) => {
       if (!order) {
         return resolve({
           status: "ERR",
-          message: "Khong tim thay don hang de xoa",
+          message: "Không tìm thấy đơn hàng để xóa",
         });
       }
 
       resolve({
         status: "OK",
-        message: "Huy don hang thanh cong va da xoa don hang",
+        message: "Hủy đơn hàng thành công !",
         data: order,
       });
     } catch (e) {

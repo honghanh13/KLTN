@@ -70,12 +70,13 @@ const OrderDetails = () => {
     fetchOrderDetails(orderId); // Fetch order details when modal opens
     setOpen(true);
   };
-  const handleCancelOrder = async (orderId) => {
+  console.log("orderData",orderData)
+  const handleCancelOrder = async (orderId,orderItems) => {
     try {
       const response = await OrderService.cancelOrder(
         orderId,
         user?.access_token,
-        selectedOrder?.orderItems
+        orderItems
       );
       if (response.status === "OK") {
         // Update the local state to reflect the cancellation
@@ -110,7 +111,6 @@ const OrderDetails = () => {
       </div>
     );
   }
-  console.log("selectedOrder", selectedOrder);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -142,9 +142,10 @@ const OrderDetails = () => {
           <Card
             key={order._id}
             style={{
-              margin: "0 auto",
+              margin: "10px auto",
               borderRadius: 10,
               boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+
             }}
           >
             {/* Header */}
@@ -209,7 +210,7 @@ const OrderDetails = () => {
               <Button
                 type="dashed"
                 danger
-                onClick={() => handleCancelOrder(order._id)} // Call cancel API
+                onClick={() => handleCancelOrder(order._id,order.orderItems)} // Call cancel API
               >
                 Hủy Đơn Hàng
               </Button>

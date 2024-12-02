@@ -12,7 +12,7 @@ const createUser = (newUser) => {
       if (checkUser != null) {
         resolve({
           status: "OK",
-          message: "The email is already",
+          message: "Email này đã tồn tại",
         });
       }
       const hash = bcrypt.hashSync(password, 10);
@@ -45,7 +45,7 @@ const loginUser = (userLogin) => {
       if (checkUser === null) {
         resolve({
           status: "ERR",
-          message: "The user is not defined",
+          message: "Email chưa đúng hoặc tài khoản chưa được đăng ký",
         });
       }
       const comparePassword = bcrypt.compareSync(password, checkUser.password);
@@ -53,7 +53,7 @@ const loginUser = (userLogin) => {
       if (!comparePassword) {
         resolve({
           status: "ERR",
-          message: "The password or user is incorrect",
+          message: "Mật khẩu không đúng vui lòng kiểm tra lại",
         });
       }
       const access_token = await genneralAccessToken({

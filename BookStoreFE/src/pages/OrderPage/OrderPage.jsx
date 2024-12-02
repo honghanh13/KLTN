@@ -8,9 +8,10 @@ import {
   removeOrderProduct,
   selectedOrder,
 } from "../../redux/slides/orderSlide";
+import StepComponent from "../../components/StepComponent/StepComponent";
 const OrderPage = () => {
   const order = useSelector((state) => state.order);
-  console.log("order",order)
+  console.log("order", order);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -104,7 +105,7 @@ const OrderPage = () => {
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             <img
-            width={60}
+              width={60}
               src={record?.image || "https://via.placeholder.com/50"} // Gắn hình ảnh nếu có
               alt="product"
               style={{ marginRight: 10 }}
@@ -181,27 +182,57 @@ const OrderPage = () => {
     product: item.name, // Tên sản phẩm
     price: item.price, // Giá sản phẩm
     quantity: item.amount, // Số lượng sản phẩm
-    image:item.image,
+    image: item.image,
     total: item.price * item.amount, // Thành tiền
     idProduct: item.product, // ID sản phẩm để xử lý
   }));
 
   const handleClickCheckOut = () => {
     if (!user?.id) {
-      message.destroy()
-      message.info('Vui lòng đăng nhập');
+      message.destroy();
+      message.info("Vui lòng đăng nhập");
     } else if (order?.orderItemsSelected?.length === 0) {
-      message.destroy()
-      message.info('Vui lòng chọn sản phẩm');
-    } 
-     else {
+      message.destroy();
+      message.info("Vui lòng chọn sản phẩm");
+    } else {
       navigate(`/Checkout`);
     }
   };
-
+  const itemsDiscount = [
+    {
+      title: "Giảm giá " + " 100.000 Đ",
+      description: "Khi chọn sản phẩm trên" + " 1.000.000 Đ",
+    },
+    {
+      title: "Giảm giá " + " 250.000 Đ",
+      description: "Khi chọn sản phẩm trên" + " 2.000.000 Đ",
+    },
+    {
+      title: "Giảm giá " + " 350.000 Đ",
+      description: "Khi chọn sản phẩm trên" + " 3.000.000 Đ",
+    },
+  ];
 
   return (
     <div style={{ padding: 20 }}>
+      <div style={{marginBottom:"10px"}}>
+        <StepComponent
+          items={itemsDiscount}
+          curent={
+            priceDiscountMemo === 350000
+              ? 3
+              : priceDiscountMemo === 250000
+              ? 2
+              : priceDiscountMemo === 100000
+              ? 1
+              : priceDiscountMemo === 0
+              ? 0
+              : order?.orderItemsSelected?.length === 0
+              ? 0
+              : 3
+          }
+        />
+      </div>
       <Card title="Giỏ hàng" style={{ marginBottom: 20 }}>
         <Table
           dataSource={dataSource}
@@ -210,7 +241,9 @@ const OrderPage = () => {
           rowKey="key"
         />
       </Card>
-    <Button size="large" onClick={() => navigate("/")}>Tiếp tục mua hàng</Button>
+      <Button size="large" onClick={() => navigate("/")}>
+        Tiếp tục mua hàng
+      </Button>
       <Card style={{ maxWidth: 300, marginLeft: "auto" }}>
         <div style={{ marginBottom: 20 }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>

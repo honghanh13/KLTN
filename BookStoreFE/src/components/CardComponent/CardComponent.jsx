@@ -8,7 +8,11 @@ import { converPrice } from "../../utils";
 const CardComponent = ({id,name,rating,image,selled,price,discount}) => {
 
   const navigate = useNavigate();
-  
+ 
+ 
+  const discountedPrice =
+  price * (1 - discount / 100);
+
   const handleDetailsProduct = (id) => {
     navigate(`/product-details/${id}`);
   };
@@ -34,7 +38,7 @@ const CardComponent = ({id,name,rating,image,selled,price,discount}) => {
           <WrapperStyleTextSell> | Đã bán {selled}+</WrapperStyleTextSell>
           </WrapperReportText>
           <WrapperPriceText>
-            <span style={{marginRight:'8px'}}>{converPrice(price)}</span>
+            <span style={{marginRight:'8px'}}>{converPrice(discountedPrice)}</span>
             <WrapperDiscountText>
               -{discount}%
             </WrapperDiscountText>

@@ -7,7 +7,7 @@ import {
 import InputForm from "../../components/InputForm/InputForm";
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 import imageLogo from "../../assets/images/logo_log_in.png";
-import { Image, message } from "antd";
+import { Image, Input, message } from "antd";
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -85,30 +85,21 @@ console.log('data',data)
         <WapperContainerLeft>
           <h1>Xin chào </h1>
           <p style={{ paddingTop: "10px" }}>Đăng nhập vào tạo tài khoản </p>
-          <InputForm
+          <Input
             style={{ marginBottom: "10px" }}
             placeholder="abc@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <div style={{ position: "relative" }}>
-            <span
-              style={{
-                zIndex: 10,
-                position: "absolute",
-                top: "4px",
-                right: "8px",
-              }}
-            >
-              {isShowPassword ? <EyeFilled /> : <EyeInvisibleFilled />}
-            </span>
-            <InputForm
-              placeholder="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              type={isShowPassword ? "text" : "password"}
-            />
+            <Input.Password
+           placeholder="password"
+           value={password}
+           onChange={(e) => setPassword(e.target.value)}/>
+          
+            
           </div>
+          <p style={{color:"red", marginTop:"20px"}}>{loginError}</p>
           <ButtonComponent
             bordered={false}
             size={40}

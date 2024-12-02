@@ -11,13 +11,16 @@ import { updateUser } from "../../redux/slides/userSlide";
 import * as UserService from "../../Service/UserService";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 
-import { Image, message } from "antd";
-import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
+import { Image, Input, message } from "antd";
+import {
+  EyeFilled,
+  EyeInvisibleFilled,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 const SignUpPage = () => {
-  const [isShowPassword, setIsShowPassword] = useState(false);
-  const [isShowConfirmPassword, setIsConfirmPassword] = useState(false);
-
+ 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +48,7 @@ const SignUpPage = () => {
       message
         .open({ type: "loading", content: "Loading...", duration: 1 })
         .then(() => {
-          setTimeout(() => {                                                                  
+          setTimeout(() => {
             message.success("Đăng ký thành công", 1.5);
             message.info("Vui lòng đăng nhập", 1.5);
             navigate("/sign-in");
@@ -56,7 +59,6 @@ const SignUpPage = () => {
       message.error(data?.message || error?.message || "Có lỗi khi đăng ký");
     }
   }, [isSuccess, isError, data, error, navigate]);
-
 
   return (
     <div
@@ -79,21 +81,23 @@ const SignUpPage = () => {
       >
         <WapperContainerLeft>
           <h1>Xin chào </h1>
-          <p style={{ paddingTop: "10px" }}>Đăng ký vào tạo tài khoản </p>
-          <InputForm
+          <p style={{ paddingTop: "10px", fontSize: 14 }}>
+            Đăng ký vào tạo tài khoản{" "}
+          </p>
+          <Input
             value={name}
             onChange={handleOnchangeUsername}
             style={{ marginBottom: "10px" }}
             placeholder="Full name"
           />
-          <InputForm
+          <Input
             value={phone}
             onChange={handleOnchangePhone}
             style={{ marginBottom: "10px" }}
             placeholder="Phone number"
           />
 
-          <InputForm
+          <Input
             style={{ marginBottom: "10px" }}
             placeholder="abc@gmail.com"
             value={email}
@@ -101,38 +105,19 @@ const SignUpPage = () => {
           />
 
           <div style={{ position: "relative" }}>
-            <span
-              style={{
-                zIndex: 10,
-                position: "absolute",
-                top: "4px",
-                right: "8px",
-              }}
-            >
-              {isShowPassword ? <EyeFilled /> : <EyeInvisibleFilled />}
-            </span>
-            <InputForm
-              placeholder="password"
+              <Input.Password
+              placeholder="Password"
               value={password}
               onChange={handleOnchangePassword}
               style={{ marginBottom: "10px" }}
             />
           </div>
           <div style={{ position: "relative" }}>
-            <span
-              style={{
-                zIndex: 10,
-                position: "absolute",
-                top: "4px",
-                right: "8px",
-              }}
-            >
-              {isShowPassword ? <EyeFilled /> : <EyeInvisibleFilled />}
-            </span>
-            <InputForm
+        
+            <Input.Password
               value={confirmPassword}
               onChange={handleOnchangeConfirmPassword}
-              placeholder="confirm password"
+              placeholder="Confirm Password"
             />
           </div>
 
@@ -155,13 +140,13 @@ const SignUpPage = () => {
               fontweight: "700",
             }}
           ></ButtonComponent>
-          <p>
-            <WapperTextLight>Quên mật khẩu</WapperTextLight>
-          </p>
-          <p>
+
+          <p style={{ fontSize: 12 }}>
             Bạn có tài khoản?{" "}
-            <span>
-              <WapperTextLight>Đăng nhập</WapperTextLight>
+            <span style={{ cursor: "pointer" }}>
+              <WapperTextLight onClick={() => navigate("/sign-in")}>
+                Đăng nhập
+              </WapperTextLight>
             </span>
           </p>
         </WapperContainerLeft>
@@ -173,7 +158,7 @@ const SignUpPage = () => {
             height="203px"
             width="203px"
           />
-          <h4>Mua văn phòng phẩm</h4>
+          <h1>Mua văn phòng phẩm</h1>
         </WapperContainerRight>
       </div>
     </div>

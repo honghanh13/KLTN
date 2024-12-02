@@ -4,6 +4,7 @@ import InputComponent from "../InputComponent/InputComponent";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import * as ProductService from "../../Service/ProductService"
 import { useNavigate } from "react-router-dom";
+import { converPrice } from "../../utils";
 const ButtonInputSearch = (props) => {
   const {
     size,
@@ -58,6 +59,7 @@ const ButtonInputSearch = (props) => {
       <div style={{ display: "flex" }}>
         <InputComponent
           size={size}
+          prefix={<SearchOutlined  style={{ color: "#000" }} />}
           placeholder={placeholder}
           bordered={bordered}
           style={{ backgroundColor: backgroundColorInput }}
@@ -68,14 +70,7 @@ const ButtonInputSearch = (props) => {
           }}
           onFocus={() => setIsDropdownVisible(true)} // Hiển thị dropdown khi focus
         />
-        <ButtonComponent
-          size={size}
-          styleButton={{ background: backgroundColorButton, border: !bordered && "none" }}
-          icon={<SearchOutlined color={colorButton} style={{ color: "#fff" }} />}
-          textButton={textButton}
-          styleTextButton={{ color: colorButton }}
-          onClick={() => handleSearch(searchValue)} // Nút tìm kiếm vẫn hoạt động
-        />
+       
       </div>
       {/* Search Results */}
       {isDropdownVisible && searchResults.length > 0 && (
@@ -115,7 +110,7 @@ const ButtonInputSearch = (props) => {
               />
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: "bold", fontSize: "14px" }}>{product.name}</div>
-                <div style={{ color: "green", fontSize: "12px" }}>{product.price}</div>
+                <div style={{ color: "green", fontSize: "12px" }}>{converPrice(product.price)}</div>
               </div>
             </div>
           ))}

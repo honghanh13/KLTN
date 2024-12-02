@@ -184,19 +184,33 @@ const ProductDetailsComponent = ({ id }) => {
             </span>
           </WrapperPriceTextProduct>
         </WrapperPriceProduct>
+        {user?.address ? (
+          <WrapperAddressProduct>
+            <span> Giao đến </span>
+            <span className="address"> {user?.address}</span>
+            <span
+              className="change-address"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/profile")}
+            >
+              {" "}
+              - Đổi địa chỉ
+            </span>
+          </WrapperAddressProduct>
+        ) : (
+          <></>
+        )}
 
-        <WrapperAddressProduct>
-          <span> Giao đến </span>
-          <span className="address"> {user?.address}</span>
-          <span
-            className="change-address"
-            style={{ cursor: "pointer" }}
-            onClick={() => navigate("/profile")}
-          >
-            {" "}
-            - Đổi địa chỉ
-          </span>
-        </WrapperAddressProduct>
+        <div
+          style={{
+            margin: "10px 0 20px",
+            padding: "10px 0",
+            borderTop: "1px solid #e5e5e5",
+            borderBottom: "1px solid #e5e5e55",
+          }}
+        >
+          <p>Mô tả: {productDetails?.description}</p>
+        </div>
         <div
           style={{
             margin: "10px 0 20px",
@@ -208,7 +222,7 @@ const ProductDetailsComponent = ({ id }) => {
           <div style={{ marginBottom: "10px" }}>Số lượng</div>
           <WrapperQualityProduct>
             <button
-              style={{ border: "none", background: "#fff", cursor:"pointer" }}
+              style={{ border: "none", background: "#fff", cursor: "pointer" }}
               onClick={() => {
                 if (numProduct > 1) {
                   setNumProduct((prev) => prev - 1);
@@ -227,7 +241,7 @@ const ProductDetailsComponent = ({ id }) => {
               onChange={onChange}
             />
             <button
-              style={{ border: "none", background: "#fff", cursor:"pointer" }}
+              style={{ border: "none", background: "#fff", cursor: "pointer" }}
               onClick={() => {
                 if (numProduct < productDetails?.countInStock) {
                   setNumProduct((prev) => prev + 1);
@@ -264,7 +278,7 @@ const ProductDetailsComponent = ({ id }) => {
               fontweight: "700",
             }}
           ></ButtonComponent>
-          <ButtonComponent
+          {/* <ButtonComponent
             bordered={false}
             size={40}
             styleButton={{
@@ -276,7 +290,7 @@ const ProductDetailsComponent = ({ id }) => {
             }}
             textButton={"Mua trả sau"}
             styleTextButton={{ color: "rgb(13, 92, 182", fontSize: "15px" }}
-          ></ButtonComponent>
+          ></ButtonComponent> */}
         </div>
       </Col>
     </Row>

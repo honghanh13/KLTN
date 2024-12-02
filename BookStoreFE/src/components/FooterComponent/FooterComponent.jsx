@@ -1,13 +1,19 @@
 import React from "react";
 import { Row, Col, Input, Button } from "antd";
-import { MailOutlined, PhoneOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import {
+  MailOutlined,
+  PhoneOutlined,
+  EnvironmentOutlined,
+} from "@ant-design/icons";
 import styled from "styled-components";
 
 const FooterContainer = styled.div`
+  display:block;
   background-color: #f7f7f7;
   padding: 40px 20px;
   font-family: Arial, sans-serif;
   border-top: 1px solid #e5e5e5;
+   margin-top: auto;
 `;
 
 const FooterTitle = styled.h3`
@@ -58,8 +64,9 @@ const FooterComponent = () => {
         <Col span={8}>
           <FooterTitle>Văn Phòng Phẩm XYZ</FooterTitle>
           <FooterText>
-            Chúng tôi cung cấp các sản phẩm văn phòng phẩm chất lượng cao, đảm bảo đáp ứng mọi nhu cầu
-            của bạn. Hãy ghé thăm cửa hàng để khám phá thế giới dụng cụ học tập và văn phòng đa dạng.
+            Chúng tôi cung cấp các sản phẩm văn phòng phẩm chất lượng cao, đảm
+            bảo đáp ứng mọi nhu cầu của bạn. Hãy ghé thăm cửa hàng để khám phá
+            thế giới dụng cụ học tập và văn phòng đa dạng.
           </FooterText>
         </Col>
 
@@ -94,7 +101,14 @@ const FooterComponent = () => {
           </div>
         </Col>
       </Row>
-      <div style={{ textAlign: "center", marginTop: "20px", color: "#999", fontSize: "12px" }}>
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "20px",
+          color: "#999",
+          fontSize: "12px",
+        }}
+      >
         © 2024 Văn Phòng Phẩm XYZ. Tất cả các quyền được bảo lưu.
       </div>
     </FooterContainer>

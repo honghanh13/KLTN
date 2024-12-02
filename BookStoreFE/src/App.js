@@ -67,15 +67,13 @@ function App() {
 
  
   return (
-    
     <div>
-      
       <Suspense fallback={<LoadingComponent></LoadingComponent>}>
       <Router>
         <Routes>
           {routes.map((route) => {
             const Page = route.page;
-            const ischeckAuth = !route.isPrivate || user.isAdmin;
+            const ischeckAuth = !route.isPrivate || user?.isAdmin;
             const Layout = route?.isShowHeader ? DefaultComPonent :  Fragment;
             return (
               <Route key={route.path} path={ischeckAuth ? route.path : ""} element={
@@ -89,7 +87,6 @@ function App() {
         </Routes>
       </Router>
       </Suspense>
-      {/* </Loading> */}
     </div>
   )
 }

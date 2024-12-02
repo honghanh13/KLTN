@@ -21,8 +21,6 @@ const HomePage = () => {
   const [sort, setSort] = useState(null);
   const [filter, setFilter] = useState(["type", ""]);
   const [totalPages, setTotalPages] = useState(0);
-  // const searchProduct = useSelector((state) => state?.product.search);
-  // const searchDebounce = useDebounce(searchProduct, 1000);
   const refSearch = useRef();
   const [stateProducts, setStateProducts] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -90,82 +88,95 @@ const HomePage = () => {
   };
 
   return (
-    <>
-      <div style={{ width: "1270px", margin: "0 auto", padding: 15 }}>
-        <span
-          style={{ padding: "0 10px", cursor: "pointer", fontSize: "14px" }}
-          onClick={handleSetTypeAll}
-        >
-          Tất cả
-        </span>
-        {listType.map((item) => {
-          return (
+    <div style={{ minHeight: "100vh" }}>
+      <div>
+        {" "}
+        {/* Đảm bảo nội dung chiếm khoảng trống */}
+        <div style={{ marginTop: "10px", marginBottom: "20px" }}>
+          <span
+            style={{
+              padding: "10px 30px",
+              cursor: "pointer",
+              fontSize: "14px",
+              border: "1px solid, #ccc",
+              borderRadius: "5px",
+            }}
+            onClick={handleSetTypeAll}
+          >
+            Tất cả
+          </span>
+          {listType.map((item, index) => (
             <span
-              style={{ padding: "0 10px", cursor: "pointer", fontSize: "14px" }}
+              key={index}
+              style={{
+                padding: "10px 30px",
+                marginLeft: "5px",
+                cursor: "pointer",
+                fontSize: "14px",
+                border: "1px solid, #ccc",
+                borderRadius: "5px",
+              }}
               onClick={() => handleTypeSelect(item)}
             >
               {item}
             </span>
-          );
-        })}
-      </div>
-      <div
-        className="body"
-        style={{ width: "100%", backgroundColor: "#efefef" }}
-      >
+          ))}
+        </div>
+        <SliderComponent arrImages={[slider1, slider2, slider3]} />
         <div
-          id="container"
-          style={{ height: "1000px", width: "1270px", margin: "0 auto" }}
+          className="body"
+          style={{ width: "100%", backgroundColor: "#efefef" }}
         >
-          <SliderComponent arrImages={[slider1, slider2, slider3]} />
-          <WrapperProducts>
-            {isLoading ? (
-              <h3>Loading...</h3>
-            ) : (
-              stateProducts?.map((product) => (
-               <>
-                   <CardComponent
-                  key={product?._id}
-                  id={product?._id}
-                  name={product?.name}
-                  rating={product?.rating}
-                  price={product?.price}
-                  discount={product?.discount}
-                  image={product?.image}
-                  selled={product?.selled}
+          <div id="container" style={{ width: "1270px", margin: "0 auto" }}>
+            <WrapperProducts>
+              {isLoading ? (
+                <h3>Loading...</h3>
+              ) : (
+                stateProducts?.map((product) => (
+                  <>
+                    <CardComponent
+                      key={product?._id}
+                      id={product?._id}
+                      name={product?.name}
+                      rating={product?.rating}
+                      price={product?.price}
+                      discount={product?.discount}
+                      image={product?.image}
+                      selled={product?.selled}
+                    />
+                  </>
+                ))
+              )}
+            </WrapperProducts>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "10px",
+              }}
+            >
+              {page + 1 < totalPages && (
+                <WrapperButtonMore
+                  textButton="Xem thêm"
+                  type="outline"
+                  styleButton={{
+                    border: "1px solid rgb(11, 116,229)",
+                    color: "rgb(11,116,229)",
+                    width: "240px",
+                    height: "38px",
+                    borderRadius: "4px",
+                  }}
+                  styleTextButton={{ fontWeight: 500 }}
+                  onClick={handleLoadMore}
                 />
-                </>
-              ))
-            )}
-          </WrapperProducts>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "10px",
-            }}
-          >
-            {page + 1 < totalPages && (
-              <WrapperButtonMore
-                textButton="Xem thêm"
-                type="outline"
-                styleButton={{
-                  border: "1px solid rgb(11, 116,229)",
-                  color: "rgb(11,116,229)",
-                  width: "240px",
-                  height: "38px",
-                  borderRadius: "4px",
-                }}
-                styleTextButton={{ fontWeight: 500 }}
-                onClick={handleLoadMore}
-              />
-            )}
-            {/* <NavBarComponent/> */}
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
+
 export default HomePage;

@@ -9,17 +9,17 @@ const createUser = async (req, res) => {
     if (!name || !email || !password || !confirmPassword || !phone) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is required",
+        message: "Yêu cầu nhập đủ thông tin",
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is email",
+        message: "Vui lòng nhập đúng Email",
       });
     } else if (password !== confirmPassword) {
       return res.status(200).json({
         status: "ERR",
-        message: "The password is equal confirmPassword",
+        message: "Mật khẩu không giống với nhập lại mật khẩu",
       });
     }
     const response = await UserService.createUser(req.body);
