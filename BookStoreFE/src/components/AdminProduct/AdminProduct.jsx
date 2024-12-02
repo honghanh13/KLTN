@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { WrapperHeader } from "./style";
 import {
   Button,
+  Drawer,
   Form,
   Image,
   Input,
@@ -645,6 +646,200 @@ const AdminProduct = () => {
             </Button>
           </Form.Item>
         </Form>
+      </Modal>
+
+      <Drawer
+        title="Cập nhật sản phẩm"
+        onClose={onClose}
+        open={isOpenDrawer}
+        loading={loadingDrawer}
+        width="40%"
+      >
+        <Form
+          isLoadingProduct={isLoadingProduct}
+          name="updateProduct"
+          labelCol={{
+            span: 6,
+          }}
+          wrapperCol={{
+            span: 18,
+          }}
+          style={{
+            maxWidth: 600,
+          }}
+          onFinish={onUpdateProducts}
+          autoComplete="on"
+          form={form}
+        >
+          <Form.Item
+            label="Tên sản phẩm"
+            name="name"
+            rules={[{ required: true, message: "Please input your Name!" }]}
+          >
+            <InputComponent
+              value={stateProductDetails.name}
+              onChange={handleOnChangeDetails}
+              name="name"
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Phân loại "
+            name="type"
+            rules={[
+              {
+                required: true,
+                message: "Hãy phân loại món ăn!",
+              },
+            ]}
+          >
+            <InputComponent
+              size={50}
+              value={stateProductDetails["type"]}
+              onChange={handleOnChangeDetails}
+              name="type"
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Tồn kho"
+            name="countInStock"
+            rules={[
+              {
+                required: true,
+                message: "Please input your number CountInStock!",
+              },
+            ]}
+          >
+            <InputComponent
+              value={stateProductDetails.countInStock}
+              onChange={handleOnChangeDetails}
+              name="countInStock"
+            />
+          </Form.Item>
+          <Form.Item
+            label="Giá sản phẩm"
+            name="price"
+            rules={[{ required: true, message: "Please input your Price!" }]}
+          >
+            <InputNumber
+              min={0}
+              step={1000}
+              prefix={<DollarOutlined />}
+              value={stateProductDetails.price}
+              formatter={(value) =>
+                ` ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+              onChange={(value) =>
+                handleOnChangeDetails({ target: { name: "price", value } })
+              }
+              name="price"
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Đánh giá"
+            name="rating"
+            rules={[{ required: true, message: "Please input your Rating!" }]}
+          >
+            <InputComponent
+              value={stateProductDetails.rating}
+              onChange={handleOnChangeDetails}
+              name="rating"
+            />
+          </Form.Item>
+          <Form.Item
+            label="Mô tả"
+            name="description"
+            rules={[
+              { required: true, message: "Please input your Description!" },
+            ]}
+          >
+            <InputComponent
+              value={stateProductDetails.description}
+              onChange={handleOnChangeDetails}
+              name="description"
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Giảm giá"
+            name="discount"
+            rules={[
+              { required: true, message: "Please input your Description!" },
+            ]}
+          >
+            <InputNumber
+              min={0}
+              step={1000}
+              prefix={<PercentageOutlined />}
+              value={stateProductDetails.discount}
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+              onChange={(value) =>
+                handleOnChangeDetails({ target: { name: "discount", value } })
+              }
+              name="discount"
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Ảnh sản phẩm"
+            name="image"
+            rules={[
+              {
+                required: true,
+                message: "Hãy thêm hình ảnh cho món ăn!",
+              },
+            ]}
+          >
+            <Upload
+              maxCount={1}
+              className="ant-upload-list-item-name"
+              onChange={handleOnchangeAvatarDetails}
+              showUploadList={false}
+              fileList={
+                stateProductDetails?.image
+                  ? [{ uid: "-1", url: stateProductDetails?.image }]
+                  : []
+              }
+            >
+              <Button icon={<UploadOutlined />}>Chọn hình ảnh</Button>
+            </Upload>
+            {stateProductDetails?.image && (
+              <Image
+                src={stateProductDetails?.image}
+                alt="Ảnh đại diện"
+                style={{
+                  height: "60px",
+                  width: "60px",
+                  marginLeft: "10px",
+                  borderRadius: "10%",
+                  objectFit: "cover",
+                }}
+              />
+            )}
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ offset: 20, span: 20 }}>
+            <Button type="primary" htmlType="submit" style={{ width: "90%" }}>
+              Cập nhật
+            </Button>
+          </Form.Item>
+        </Form>
+      </Drawer>
+
+      <Modal
+        title="Xóa món ăn"
+        open={isModalOpenDelete}
+        onCancel={handleCancelDelete}
+        onOk={handleDeleteProduct}
+      >
+        <div>Bạn có chắc xóa sản phẩm này không</div>
       </Modal>
     </div>
     // video 38: 20:42p
