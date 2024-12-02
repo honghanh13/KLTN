@@ -6,12 +6,13 @@ import TypeProductPage from "../pages/TypeProductPage/TypeProductPage";
 import SignInPage from "../pages/SignInPage/SignInPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage/ProductDetailsPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
-import orderPage from "../pages/OrderPage/OrderPage"; 
-import CheckoutPage from "../pages/CheckoutPage/CheckoutPage"; 
-import orderSuccess from "../pages/OrderSuccess/OrderSucces"; 
-import UserInfoUpdate from "../pages/ProfilePage/UserInfoUpdate"; 
-import OrderDetails from "../pages/ProfilePage/MyOrderPage"; 
+import orderPage from "../pages/OrderPage/OrderPage";
+import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
+import orderSuccess from "../pages/OrderSuccess/OrderSucces";
+import UserInfoUpdate from "../pages/ProfilePage/UserInfoUpdate";
+import OrderDetails from "../pages/ProfilePage/MyOrderPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
+import AdminOrderDetails from "../components/AdminOrder/AdminOrderDetails";
 
 export const routes = [
   {
@@ -81,6 +82,14 @@ export const routes = [
     isShowHeader: false,
     isPrivate: true,
   },
+
+  {
+    path: "/system/admin/OrderDetails/:id",
+    page: AdminOrderDetails,
+    isShowHeader: false,
+    isPrivate: true,
+  },
+
   {
     path: "*",
     page: NotFoundPage,
