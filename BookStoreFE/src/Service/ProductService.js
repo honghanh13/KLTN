@@ -4,35 +4,58 @@ import { axiosJWT } from "./UserService";
 
 
 export const getAllProduct = async (page = 0, limit = 8, sort = null, filter = null) => {
-    try {
-      const params = {};
-  
-      // Thêm các tham số nếu có
-      if (page !== null) params.page = page;
-      if (limit !== null) params.limit = limit;
-      if (sort) params.sort = JSON.stringify(sort); // Sort là mảng [value, key]
-      if (filter) params.filter = JSON.stringify(filter); // Filter là mảng [key, value]
-  
-      // Gửi yêu cầu đến API
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/product/get-all`,
-        { params } // Gửi params qua query
-      );
-  
-      return res.data; // Trả về dữ liệu
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      throw error;
-    }
-  };
+  try {
+    const params = {};
 
-export const getAllProductAdmin = async ( page, limit) => {
-  const res = await axios.get(
-    `${process.env.REACT_APP_API_URL}/product/get-all-admin`, {
-      params: { page, limit } // Thêm page và limit vào params
-    }
-  );
-  return res.data;
+    // Thêm các tham số nếu có
+    if (page !== null) params.page = page;
+    if (limit !== null) params.limit = limit;
+    if (sort) params.sort = JSON.stringify(sort); // Sort là mảng [value, key]
+    if (filter) params.filter = JSON.stringify(filter); // Filter là mảng [key, value]
+
+    // Gửi yêu cầu đến API
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/product/get-all`,
+      { params } // Gửi params qua query
+    );
+
+    return res.data; // Trả về dữ liệu
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+};
+
+// export const getAllProductAdmin = async ( page, limit) => {
+//   const res = await axios.get(
+//     `${process.env.REACT_APP_API_URL}/product/get-all-admin`, {
+//       params: { page, limit } // Thêm page và limit vào params
+//     }
+//   );
+//   return res.data;
+// };
+
+export const getAllProductAdmin = async (page = 0, limit = 999, sort = null, filter = null) => {
+  try {
+    const params = {};
+
+    // Thêm các tham số nếu có
+    if (page !== null) params.page = page;
+    if (limit !== null) params.limit = limit;
+    if (sort) params.sort = JSON.stringify(sort); // Sort là mảng [value, key]
+    if (filter) params.filter = JSON.stringify(filter); // Filter là mảng [key, value]
+
+    // Gửi yêu cầu đến API
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/product/get-all`,
+      { params } // Gửi params qua query
+    );
+
+    return res.data; // Trả về dữ liệu
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
 };
 
 export const searchProduct = async (search) => {

@@ -81,7 +81,7 @@ const AdminDashBoard = () => {
 
   const { data: products } = useQuery({
     queryKey: ["products"],
-    queryFn: ProductService.getAllProduct,
+    queryFn: ProductService.getAllProductAdmin,
   });
 
   const dailyRevenue = calculateDailyRevenue(orders);
