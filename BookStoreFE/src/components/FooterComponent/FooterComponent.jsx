@@ -61,8 +61,8 @@ const FooterComponent = () => {
     <FooterContainer>
       <Row gutter={[24, 24]}>
         {/* Section 1: About */}
-        <Col span={8}>
-          <FooterTitle>Văn Phòng Phẩm XYZ</FooterTitle>
+        <Col span={8}style ={{paddingLeft: "110px"}}>
+          <FooterTitle>Văn Phòng Phẩm doly</FooterTitle>
           <FooterText>
             Chúng tôi cung cấp các sản phẩm văn phòng phẩm chất lượng cao, đảm
             bảo đáp ứng mọi nhu cầu của bạn. Hãy ghé thăm cửa hàng để khám phá
@@ -71,7 +71,7 @@ const FooterComponent = () => {
         </Col>
 
         {/* Section 2: Quick Links */}
-        <Col span={8}>
+        <Col span={8}style ={{paddingLeft: "150px"}}>
           <FooterTitle>Liên Kết Nhanh</FooterTitle>
           <FooterLink href="/products">Sản phẩm</FooterLink>
           <FooterLink href="/about">Về chúng tôi</FooterLink>
@@ -84,7 +84,7 @@ const FooterComponent = () => {
           <FooterTitle>Liên Hệ</FooterTitle>
           <FooterText>
             <EnvironmentOutlined style={{ marginRight: "8px" }} />
-            123 Đường ABC, Quận XYZ, TP.HCM
+            123 Đường Hồ Văn Huê, Phường 9, Quận Phú Nhuận, TP.HCM
           </FooterText>
           <FooterText>
             <PhoneOutlined style={{ marginRight: "8px" }} />
@@ -92,12 +92,12 @@ const FooterComponent = () => {
           </FooterText>
           <FooterText>
             <MailOutlined style={{ marginRight: "8px" }} />
-            support@vanphongpham.xyz
+            mhonghanh@gmail.com
           </FooterText>
-          <FooterTitle>Đăng ký nhận tin</FooterTitle>
+          <FooterTitle>Đánh giá trải nghiệm</FooterTitle>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <NewsletterInput placeholder="Nhập email của bạn" />
-            <Button type="primary">Đăng ký</Button>
+            <NewsletterInput placeholder="Nhập đánh giá của bạn" />
+            <Button type="primary">Gửi</Button>
           </div>
         </Col>
       </Row>

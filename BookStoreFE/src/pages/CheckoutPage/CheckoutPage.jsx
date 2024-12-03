@@ -204,7 +204,7 @@ const CheckoutPage = () => {
         {/* Right Section */}
         <div style={{ width: "50%" }}>
           <Card
-            title={`Địa chỉ: ${user?.address}`}
+            title={`Địa chỉ: ${user?.address}, Số điện thoại: ${user?.phone}`}
             extra={<Link to={"/profile"}>Thay đổi</Link>}
             style={{ marginBottom: 20 }}
           >

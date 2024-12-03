@@ -443,6 +443,7 @@ const AdminDashBoard = () => {
     //   </Content>
     // </div>
     <div>
+      
       <Content style={{ margin: "24px 16px", padding: 24 }}>
         {/* Card Section */}
         <Row gutter={[24, 24]}>
@@ -499,7 +500,7 @@ const AdminDashBoard = () => {
                 style={{ fontSize: "2.5rem", marginBottom: "10px" }}
               />
               <Title level={3}>{products?.data?.length || 0}</Title>
-              <Text>Số lượng món ăn</Text>
+              <Text>Số lượng sản phẩm</Text>
             </Card>
           </Col>
 
