@@ -67,6 +67,7 @@ function App() {
 
  
   return (
+    
     <div>
       <Suspense fallback={<LoadingComponent></LoadingComponent>}>
       <Router>
@@ -87,6 +88,7 @@ function App() {
         </Routes>
       </Router>
       </Suspense>
+      {/* </Loading> */}
     </div>
   )
 }

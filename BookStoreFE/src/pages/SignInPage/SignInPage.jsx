@@ -84,7 +84,7 @@ console.log('data',data)
       >
         <WapperContainerLeft>
           <h1>Xin chào </h1>
-          <p style={{ paddingTop: "10px" }}>Đăng nhập vào tạo tài khoản </p>
+          <p style={{ paddingTop: "10px", fontSize: 14  }}>Đăng nhập vào tạo tài khoản </p>
           <Input
             style={{ marginBottom: "10px" }}
             placeholder="abc@gmail.com"
@@ -97,12 +97,11 @@ console.log('data',data)
            value={password}
            onChange={(e) => setPassword(e.target.value)}/>
           
-            
           </div>
-          <p style={{color:"red", marginTop:"20px"}}>{loginError}</p>
+          <p style={{color:"red"}}>{loginError}</p>
           <ButtonComponent
             bordered={false}
-            size={40}
+            size={60}
             styleButton={{
               background: "rgb(255, 57, 69",
               height: "48px",
@@ -139,7 +138,7 @@ console.log('data',data)
             height="203px"
             width="203px"
           />
-          <h4>Mua văn phòng phẩm</h4>
+          <h1>Mua văn phòng phẩm</h1>
         </WapperContainerRight>
       </div>
     </div>

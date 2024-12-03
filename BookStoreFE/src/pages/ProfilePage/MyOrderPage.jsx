@@ -11,12 +11,13 @@ import {
   Modal,
   notification,
 } from "antd";
-import { UserOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { UserOutlined, ShoppingCartOutlined, CloseOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as OrderService from "../../Service/OrderService";
 import { useSelector } from "react-redux";
 import { converPrice } from "../../utils";
 import { Contant } from "../../contant";
+import { useQueryClient } from "@tanstack/react-query";
 
 const { Sider, Content } = Layout;
 
@@ -29,6 +30,13 @@ const OrderDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [confirmLoadingUpdate, setConfirmLoadingUpdate] = useState(false);
+  const [currentOrderUpdate, setCurrentOrderUpdate] = useState(null);
+  const [modalTextUpdate, setModalTextUpdate] = useState(
+    "Vui lòng xác nhận đã nhận được hàng"
+  );
+  const queryClient = useQueryClient();
 
   // Gọi API để lấy dữ liệu đơn hàng
   const fetchOrderData = async () => {
@@ -70,8 +78,7 @@ const OrderDetails = () => {
     fetchOrderDetails(orderId); // Fetch order details when modal opens
     setOpen(true);
   };
-  console.log("orderData",orderData)
-  const handleCancelOrder = async (orderId,orderItems) => {
+  const handleCancelOrder = async (orderId, orderItems) => {
     try {
       const response = await OrderService.cancelOrder(
         orderId,
@@ -112,6 +119,42 @@ const OrderDetails = () => {
     );
   }
 
+  const showModalUpdate = (order) => {
+    setOpenUpdate(true);
+    setCurrentOrderUpdate(order);
+  };
+  const handleOkUpdate = async (orderID) => {
+    setConfirmLoadingUpdate(true);
+    try {
+      await OrderService.markOrderAsReceived(
+        { orderId: orderID, isPaid: true, isDelivered: true },
+        user?.access_token
+      );
+
+      // Cập nhật state cục bộ ngay lập tức
+      setOrderData((prevOrderData) =>
+        prevOrderData.map((order) =>
+          order._id === orderID
+            ? { ...order, isPaid: true, isDelivered: true } // Cập nhật trạng thái
+            : order
+        )
+      );
+
+      // Làm mới dữ liệu từ server (nếu cần)
+      queryClient.invalidateQueries(["order", user?.id]);
+
+      setOpenUpdate(false);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setConfirmLoadingUpdate(false);
+    }
+  };
+
+  const handleCancelUpdate = () => {
+    setOpenUpdate(false);
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       {/* Sidebar */}
@@ -145,7 +188,6 @@ const OrderDetails = () => {
               margin: "10px auto",
               borderRadius: 10,
               boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
-
             }}
           >
             {/* Header */}
@@ -207,59 +249,198 @@ const OrderDetails = () => {
             {/* Footer */}
             <Divider />
             <Row justify="space-between">
-              <Button
-                type="dashed"
-                danger
-                onClick={() => handleCancelOrder(order._id,order.orderItems)} // Call cancel API
+              <div>
+                {order?.orderStatus === "1" && (
+                  <Button
+                    type="dashed"
+                    danger
+                    onClick={() =>
+                      handleCancelOrder(order._id, order.orderItems)
+                    } // Call cancel API
+                  >
+                    Hủy Đơn Hàng
+                  </Button>
+                )}
+              </div>
+
+              <div>
+                <span>
+                  {order?.orderStatus === "4" && (
+                    <>
+                      {" "}
+                      <Button
+                        type="default"
+                        onClick={() => showModalUpdate(order)}
+                        style={{ float: "right", marginRight: "16px" }}
+                        disabled={order?.isPaid && order?.isDelivered}
+                      >
+                        Đã nhận được hàng
+                      </Button>{" "}
+                      {/* {order?.isPaid === true &&
+                      order?.isDelivered === true &&
+                      order?.orderItems.some((item) => !item.isRating) ? (
+                        <Button
+                          type="primary"
+                          onClick={() =>
+                            showModalRate(
+                              order._id,
+                              order.orderItems.filter((item) => !item.isRating)
+                            )
+                          }
+                          style={{ float: "right", marginRight: "16px" }}
+                        >
+                          Đánh giá
+                        </Button>
+                      ) : null} */}
+                    </>
+                  )}
+                </span>
+
+                <Button
+                  style={{ marginRight: "10px" }}
+                  onClick={() => handleOpenModal(order._id)}
+                  type="primary"
+                >
+                  Xem Chi Tiết
+                </Button>
+              </div>
+              <Modal
+                title="Xác nhận đơn hàng"
+                open={openUpdate}
+                onOk={() => handleOkUpdate(order._id)}
+                confirmLoading={confirmLoadingUpdate}
+                onCancel={handleCancelUpdate}
               >
-                Hủy Đơn Hàng
-              </Button>
-              <Button onClick={() => handleOpenModal(order._id)} type="primary">
-                Xem Chi Tiết
-              </Button>
+                <p>{modalTextUpdate}</p>
+              </Modal>
             </Row>
           </Card>
         ))}
         <Modal
-          title="Chi Tiết Đơn Hàng"
+          title={
+            <h2 style={{ textAlign: "center", marginBottom: 0 }}>
+              Chi Tiết Đơn Hàng
+            </h2>
+          }
           open={open}
-          onOk={() => setOpen(false)}
-          onCancel={() => setOpen(false)}
+          footer={null}
+          closeIcon={<CloseOutlined onClick={() => setOpen(false)} />}
           width={1000}
         >
           {selectedOrder ? (
             <>
-              <p>Địa chỉ giao hàng: {selectedOrder.shippingAddress?.address}</p>
-              <p>Tên người nhận: {selectedOrder.shippingAddress?.fullName}</p>
-              <p>Số điện thoại: {selectedOrder.shippingAddress?.phone}</p>
-              <Divider />
-              <h4>Thông tin sản phẩm:</h4>
-              {selectedOrder?.orderItems?.map((product) => (
-                <Row key={product?._id}>
-                  <Col span={6}>
-                    <img
-                      src={product?.image}
-                      alt={product?.name}
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        objectFit: "cover",
-                        borderRadius: 5,
-                      }}
-                    />
-                  </Col>
-                  <Col span={18}>
-                    <h4>{product.name}</h4>
+              <div style={{ marginBottom: "20px" }}>
+                <h3>Thông Tin Giao Hàng</h3>
+                <Row gutter={16}>
+                  <Col span={12}>
                     <p>
-                      Giá: <strong>{converPrice(product?.price)}</strong>
+                      <strong>Người nhận:</strong>{" "}
+                      {selectedOrder.shippingAddress?.fullName}
                     </p>
-                    <p>Số lượng: {product?.amount}</p>
+                    <p>
+                      <strong>Địa chỉ:</strong>{" "}
+                      {selectedOrder.shippingAddress?.address}
+                    </p>
+                  </Col>
+                  <Col span={12}>
+                    <p>
+                      <strong>Số điện thoại:</strong>{" "}
+                      {selectedOrder.shippingAddress?.phone}
+                    </p>
+                    <p>
+                      <strong>Phương thức thanh toán:</strong>{" "}
+                      {selectedOrder.paymentMethod === "paymentincash"
+                        ? "Thanh toán tiền mặt"
+                        : selectedOrder.paymentMethod}
+                    </p>
                   </Col>
                 </Row>
-              ))}
+              </div>
+              <Divider />
+              <div style={{ marginBottom: "20px" }}>
+                <h3>Danh Sách Sản Phẩm</h3>
+                {selectedOrder.orderItems.map((product) => (
+                  <Row
+                    key={product?._id}
+                    style={{
+                      marginBottom: "10px",
+                      border: "1px solid #e8e8e8",
+                      borderRadius: "5px",
+                      padding: "10px",
+                    }}
+                    align="middle"
+                  >
+                    <Col span={6}>
+                      <img
+                        src={product?.image || "https://via.placeholder.com/80"}
+                        alt={product?.name}
+                        style={{
+                          width: "100%",
+                          maxWidth: "80px",
+                          height: "80px",
+                          objectFit: "cover",
+                          borderRadius: "5px",
+                          border: "1px solid #ddd",
+                        }}
+                      />
+                    </Col>
+                    <Col span={18}>
+                      <h4 style={{ margin: "0 0 5px 0" }}>{product.name}</h4>
+                      <p style={{ margin: "0" }}>
+                        Giá: <strong>{converPrice(product?.price)} đ</strong>
+                      </p>
+                      <p style={{ margin: "0" }}>Số lượng: {product?.amount}</p>
+                    </Col>
+                  </Row>
+                ))}
+              </div>
+              <Divider />
+              <div style={{ marginBottom: "10px" }}>
+                <h3>Thông Tin Đơn Hàng</h3>
+                <Row gutter={16}>
+                  <Col span={8}>
+                    <p>
+                      <strong>Ngày đặt hàng:</strong>{" "}
+                      {new Date(selectedOrder.createdAt).toLocaleString()}
+                    </p>
+                  </Col>
+                  <Col span={8}>
+                    <p>
+                      <strong>Ngày cập nhật:</strong>{" "}
+                      {new Date(selectedOrder.updatedAt).toLocaleString()}
+                    </p>
+                  </Col>
+                  <Col span={8}>
+                    <p>
+                      <strong>Trạng thái:</strong>{" "}
+                      {selectedOrder.isDelivered ? "Đã giao" : "Chưa giao"}
+                    </p>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col span={8}>
+                    <p>
+                      <strong>Tổng giá sản phẩm:</strong>{" "}
+                      {converPrice(selectedOrder.itemsPrice)} đ
+                    </p>
+                  </Col>
+                  <Col span={8}>
+                    <p>
+                      <strong>Phí vận chuyển:</strong>{" "}
+                      {converPrice(selectedOrder.shippingPrice)} đ
+                    </p>
+                  </Col>
+                  <Col span={8}>
+                    <p>
+                      <strong>Tổng thanh toán:</strong>{" "}
+                      {converPrice(selectedOrder.totalPrice)} đ
+                    </p>
+                  </Col>
+                </Row>
+              </div>
             </>
           ) : (
-            <p>Loading details...</p>
+            <p>Đang tải thông tin...</p>
           )}
         </Modal>
       </Content>
