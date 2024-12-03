@@ -84,7 +84,7 @@ const AdminProduct = () => {
 
   //fnc getAllProduct from API
   const getAllProduct = async () => {
-    const res = await ProductService.getAllProduct();
+    const res = await ProductService.getAllProductAdmin();
     return res;
   };
 
