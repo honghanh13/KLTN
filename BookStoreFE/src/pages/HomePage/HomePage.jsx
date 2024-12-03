@@ -106,7 +106,7 @@ const HomePage = () => {
             Tất cả
           </span>
           {listType.map((item, index) => (
-            <span
+            <span 
               key={index}
               style={{
                 padding: "10px 30px",
@@ -115,6 +115,9 @@ const HomePage = () => {
                 fontSize: "14px",
                 border: "1px solid, #ccc",
                 borderRadius: "5px",
+                display: 'inline-block',
+                backgroundColor: selectedType === item ? "#007BFF" : "white",
+                color: selectedType === item ? "white" : "black",
               }}
               onClick={() => handleTypeSelect(item)}
             >
