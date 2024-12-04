@@ -15,6 +15,7 @@ import {
   BookOutlined,
 } from "@ant-design/icons";
 import Chart from "react-apexcharts";
+import PieChartComponent from "../PieChartComponent/PieChartComponent";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -154,72 +155,169 @@ const AdminDashBoard = () => {
   //     ],
   //   };
 
-  const getChartOptions = (categories, titleText) => ({
+  // const getChartOptions = (categories, titleText) => ({
+  //   chart: {
+  //     type: "bar",
+  //     toolbar: { show: false },
+  //     animations: {
+  //       enabled: true,
+  //       easing: "easeinout",
+  //       speed: 800,
+  //     },
+  //   },
+  //   plotOptions: {
+  //     bar: {
+  //       borderRadius: 8,
+  //       horizontal: false,
+  //       distributed: true,
+  //     },
+  //   },
+  //   colors: ["#007bff", "#28a745", "#ffc107", "#dc3545", "#6f42c1"],
+  //   dataLabels: {
+  //     enabled: true,
+  //     style: {
+  //       colors: ["#fff"],
+  //       fontSize: "12px",
+  //     },
+  //   },
+  //   xaxis: {
+  //     categories: categories,
+  //     labels: {
+  //       style: {
+  //         colors: ["#333"],
+  //         fontSize: "14px",
+  //         fontWeight: "500",
+  //       },
+  //     },
+  //   },
+  //   yaxis: {
+  //     title: {
+  //       text: "Doanh thu (triệu đồng)",
+  //       style: {
+  //         color: "#666",
+  //         fontSize: "16px",
+  //         fontWeight: "600",
+  //       },
+  //     },
+  //     labels: {
+  //       formatter: (value) => `${value}M`,
+  //     },
+  //   },
+  //   grid: {
+  //     borderColor: "#e0e0e0",
+  //     strokeDashArray: 5,
+  //   },
+  //   tooltip: {
+  //     theme: "dark",
+  //     y: {
+  //       formatter: (value) => `${value} triệu đồng`,
+  //     },
+  //   },
+  //   title: {
+  //     text: titleText,
+  //     align: "center",
+  //     style: {
+  //       fontSize: "20px",
+  //       fontWeight: "bold",
+  //       color: "#333",
+  //     },
+  //   },
+  //   responsive: [
+  //     {
+  //       breakpoint: 768,
+  //       options: {
+  //         chart: { height: 300 },
+  //         xaxis: { labels: { style: { fontSize: "12px" } } },
+  //         title: { style: { fontSize: "16px" } },
+  //       },
+  //     },
+  //     {
+  //       breakpoint: 576,
+  //       options: {
+  //         chart: { height: 250 },
+  //         xaxis: { labels: { style: { fontSize: "10px" } } },
+  //         title: { style: { fontSize: "14px" } },
+  //       },
+  //     },
+  //   ],
+  // });
+  const getChartOptions = {
     chart: {
       type: "bar",
-      toolbar: { show: false },
-      animations: {
+      height: 350,
+      toolbar: { show: true },
+      dropShadow: {
         enabled: true,
-        easing: "easeinout",
-        speed: 800,
-      },
-    },
-    plotOptions: {
-      bar: {
-        borderRadius: 8,
-        horizontal: false,
-        distributed: true,
+        top: 2,
+        left: 2,
+        blur: 4,
+        opacity: 0.2,
       },
     },
     colors: ["#007bff", "#28a745", "#ffc107", "#dc3545", "#6f42c1"],
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "50%",
+        borderRadius: 5, // Bo góc cho cột
+      },
+    },
     dataLabels: {
-      enabled: true,
+      enabled: true, // Hiển thị giá trị trên cột
+      formatter: function (value) {
+        return value.toLocaleString("vi-VN");
+      },
       style: {
+        fontSize: "10px",
         colors: ["#fff"],
-        fontSize: "12px",
       },
     },
     xaxis: {
-      categories: categories,
+      categories: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
       labels: {
         style: {
-          colors: ["#333"],
+          colors: "#9C9C9C",
           fontSize: "14px",
-          fontWeight: "500",
+          fontWeight: "bold",
         },
       },
     },
     yaxis: {
-      title: {
-        text: "Doanh thu (triệu đồng)",
+      labels: {
         style: {
-          color: "#666",
-          fontSize: "16px",
-          fontWeight: "600",
+          colors: "#9C9C9C",
+          fontSize: "14px",
+        },
+        formatter: function (value) {
+          return value.toLocaleString("vi-VN");
         },
       },
-      labels: {
-        formatter: (value) => `${value}M`,
+    },
+
+    tooltip: {
+      theme: "dark", // Giao diện tối
+      y: {
+        formatter: function (value) {
+          return value.toLocaleString("vi-VN") + " VNĐ"; // Hiển thị tiền tệ
+        },
       },
     },
     grid: {
-      borderColor: "#e0e0e0",
-      strokeDashArray: 5,
-    },
-    tooltip: {
-      theme: "dark",
-      y: {
-        formatter: (value) => `${value} triệu đồng`,
-      },
-    },
-    title: {
-      text: titleText,
-      align: "center",
-      style: {
-        fontSize: "20px",
-        fontWeight: "bold",
-        color: "#333",
-      },
+      borderColor: "#e7e7e7",
+      strokeDashArray: 4,
     },
     responsive: [
       {
@@ -227,7 +325,7 @@ const AdminDashBoard = () => {
         options: {
           chart: { height: 300 },
           xaxis: { labels: { style: { fontSize: "12px" } } },
-          title: { style: { fontSize: "16px" } },
+          title: { style: { fontSize: "14px" } },
         },
       },
       {
@@ -235,11 +333,11 @@ const AdminDashBoard = () => {
         options: {
           chart: { height: 250 },
           xaxis: { labels: { style: { fontSize: "10px" } } },
-          title: { style: { fontSize: "14px" } },
+          title: { style: { fontSize: "12px" } },
         },
       },
     ],
-  });
+  };
 
   //days
   const dailyChartSeries = [{ name: "Doanh thu", data: dailyData }];
@@ -444,7 +542,13 @@ const AdminDashBoard = () => {
     // </div>
     <div>
       
-      <Content style={{ margin: "24px 16px", padding: 24 }}>
+      <Content style={{ margin: "0px 5px" }}>
+        <Title
+          level={4}
+          style={{ color: "#000", fontWeight: "bold", marginBottom: "20px", }}
+        >
+          Trang Chủ Tổng Quan Hệ Thống
+        </Title>
         {/* Card Section */}
         <Row gutter={[24, 24]}>
           {/* Card: User Count */}
@@ -526,16 +630,14 @@ const AdminDashBoard = () => {
 
         {/* Chart and Table Section */}
         <Row gutter={[24, 24]} style={{ marginTop: "30px" }}>
-          {/* Chart Card */}
           <Col xs={24} md={12}>
             <Card
-              title="Biểu đồ doanh thu"
+              title="Thống kế doanh thu"
               hoverable
               style={{
                 borderRadius: "15px",
                 boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
                 backgroundColor: "#fff",
-                padding: "20px",
               }}
             >
               <Radio.Group
@@ -563,7 +665,7 @@ const AdminDashBoard = () => {
           {/* User Table */}
           <Col xs={24} md={12}>
             <Card
-              title="Bảng người dùng"
+              title="Thống kế sản phẩm tồn kho"
               hoverable
               style={{
                 borderRadius: "15px",
@@ -571,15 +673,7 @@ const AdminDashBoard = () => {
                 backgroundColor: "#fff",
               }}
             >
-              <TableAdminComponent
-                columns={columns}
-                isLoading={isLoadingUser}
-                pagination={{
-                  position: ["bottomCenter"],
-                  pageSize: 6,
-                }}
-                data={dataTable}
-              />
+              <PieChartComponent data={products?.data} />
             </Card>
           </Col>
         </Row>

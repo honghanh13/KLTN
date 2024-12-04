@@ -82,7 +82,7 @@ const SignUpPage = () => {
         <WapperContainerLeft>
           <h1>Xin chào </h1>
           <p style={{ paddingTop: "10px", fontSize: 14 }}>
-            Đăng ký vào tạo tài khoản{" "}
+            Đăng ký tài khoản{" "}
           </p>
           <Input
             value={name}

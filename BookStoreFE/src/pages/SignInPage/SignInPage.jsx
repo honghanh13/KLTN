@@ -6,7 +6,7 @@ import {
 } from "./style";
 import InputForm from "../../components/InputForm/InputForm";
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
-import imageLogo from "../../assets/images/logo_log_in.png";
+import imageLogo from "../../assets/images/logo_1.png";
 import { Image, Input, message } from "antd";
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -84,9 +84,9 @@ console.log('data',data)
       >
         <WapperContainerLeft>
           <h1>Xin chào </h1>
-          <p style={{ paddingTop: "10px", fontSize: 14  }}>Đăng nhập vào tạo tài khoản </p>
+          <p style={{ paddingTop: "10px", fontSize: 14  }}>Đăng nhập tài khoản </p>
           <Input
-            style={{ marginBottom: "10px" }}
+            style={{ marginBottom: "10px", paddingTop:"5px" }}
             placeholder="abc@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -138,7 +138,7 @@ console.log('data',data)
             height="203px"
             width="203px"
           />
-          <h1>Mua văn phòng phẩm</h1>
+          <h1>Văn phòng phẩm doly</h1>
         </WapperContainerRight>
       </div>
     </div>

@@ -17,7 +17,7 @@ import { WapperSliderStyle } from "./style";
         <WapperSliderStyle {...settings}>
             {arrImages.map((image) =>{
                 return(
-                    <Image src={image} alt= "slider" preview={false} width="1480px" height="500px"/>
+                    <Image src={image} alt= "slider" preview={false} width= "100%" maxWidth= "1480px" height= "50vh" maxHeight= "300px"/>
                 )
             })}
 

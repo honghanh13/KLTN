@@ -54,45 +54,87 @@ export const formatDate = (dateString) => {
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 };
 
-export const convertDataChart = (data, type, dateRange, t) => {
+// export const convertDataChart = (data, type, dateRange, t) => {
+//   try {
+//     const orderContant = Contant(t);
+
+//     if (!Array.isArray(data) || !type) return [];
+
+//     const now = new Date();
+//     const object = data.reduce((acc, opt) => {
+//       if (!opt.createdAt || !opt[type]) return acc;
+
+//       const date = new Date(opt.createdAt);
+
+//       let isInRange = false;
+//       if (dateRange === 'day' && date.getDate() === now.getDate() && date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()) {
+//         isInRange = true;
+//       } else if (dateRange === 'month' && date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()) {
+//         isInRange = true;
+//       } else if (dateRange === 'year' && date.getFullYear() === now.getFullYear()) {
+//         isInRange = true;
+//       } else if (!dateRange) {
+//         isInRange = true;
+//       }
+
+//       if (isInRange) {
+//         acc[opt[type]] = (acc[opt[type]] || 0) + 1;
+//       }
+
+//       return acc;
+//     }, {});
+
+//     return Object.keys(object).map((item) => ({
+//       name: orderContant.payment[item] || item, // fallback to item if no translation found
+//       value: object[item],
+//     }));
+//   } catch (e) {
+//     console.error("Error in convertDataChart:", e);
+//     return [];
+//   }
+// };
+
+
+
+export const convertDataChart = (data, type) => {
   try {
-    const orderContant = Contant(t);
+    const inventorySummary = {};
 
-    if (!Array.isArray(data) || !type) return [];
+    // Lặp qua dữ liệu để nhóm và tính tổng số lượng tồn kho
+    Array.isArray(data) &&
+      data.forEach((product) => {
+        const key = product[type]; // Nhóm theo `name` hoặc `type`
+        if (key) {
+          inventorySummary[key] =
+            (inventorySummary[key] || 0) + (product.countInStock || 0);
+        }
+      });
 
-    const now = new Date();
-    const object = data.reduce((acc, opt) => {
-      if (!opt.createdAt || !opt[type]) return acc;
-
-      const date = new Date(opt.createdAt);
-
-      let isInRange = false;
-      if (dateRange === 'day' && date.getDate() === now.getDate() && date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()) {
-        isInRange = true;
-      } else if (dateRange === 'month' && date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()) {
-        isInRange = true;
-      } else if (dateRange === 'year' && date.getFullYear() === now.getFullYear()) {
-        isInRange = true;
-      } else if (!dateRange) {
-        isInRange = true;
-      }
-
-      if (isInRange) {
-        acc[opt[type]] = (acc[opt[type]] || 0) + 1;
-      }
-
-      return acc;
-    }, {});
-
-    return Object.keys(object).map((item) => ({
-      name: orderContant.payment[item] || item, // fallback to item if no translation found
-      value: object[item],
+    // Chuyển đổi object thành mảng { name, value }
+    return Object.keys(inventorySummary).map((key) => ({
+      name: key, // Tên sản phẩm hoặc loại
+      value: inventorySummary[key], // Tổng số lượng tồn kho
     }));
   } catch (e) {
     console.error("Error in convertDataChart:", e);
     return [];
   }
 };
+
+export const getLabels = (data, type) => {
+  const object = {};
+  Array.isArray(data) &&
+    data.forEach((opt) => {
+      if (opt[type]) {
+        object[opt[type]] = true; // Lưu tên sản phẩm
+      }
+    });
+
+  return Object.keys(object); // Trả về mảng tên sản phẩm
+};
+
+
+
 export const formatDateBlog = (dateString) => {
   return new Date(dateString).toLocaleDateString("en-GB", {
     day: "numeric",

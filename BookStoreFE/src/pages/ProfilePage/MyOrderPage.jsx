@@ -307,7 +307,7 @@ const OrderDetails = () => {
               <Modal
                 title="Xác nhận đơn hàng"
                 open={openUpdate}
-                onOk={() => handleOkUpdate(order._id)}
+                onOk={() => handleOkUpdate(currentOrderUpdate._id)}
                 confirmLoading={confirmLoadingUpdate}
                 onCancel={handleCancelUpdate}
               >
