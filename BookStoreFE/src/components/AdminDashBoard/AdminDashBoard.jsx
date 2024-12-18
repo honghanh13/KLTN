@@ -32,12 +32,13 @@ const AdminDashBoard = () => {
     return orders.data
       .filter((order) => order.isPaid) // Lọc đơn hàng đã thanh toán
       .reduce((acc, order) => {
-        const date = new Date(order.createdAt).toISOString().split("T")[0]; // Lấy ngày theo định dạng YYYY-MM-DD
-        acc[date] = (acc[date] || 0) + order.totalPrice; // Cộng dồn doanh thu dạng số
+        const dateObj = new Date(order.createdAt);
+        const date = `${String(dateObj.getDate()).padStart(2, "0")}-${String(
+          dateObj.getMonth() + 1
+        ).padStart(2, "0")}-${dateObj.getFullYear()}`; // Định dạng dd/mm/yyyy
+        acc[date] = (acc[date] || 0) + order.totalPrice; // Cộng dồn doanh thu
         return acc;
       }, {});
-
-    // Format revenue values using converPrice
   };
 
   //months
@@ -48,9 +49,10 @@ const AdminDashBoard = () => {
       .filter((order) => order.isPaid)
       .reduce((acc, order) => {
         const date = new Date(order.createdAt);
-        const month = `${date.getFullYear()}-${String(
-          date.getMonth() + 1
-        ).padStart(2, "0")}`; // Lấy tháng theo định dạng YYYY-MM
+        const month = `${String(date.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${date.getFullYear()}`; // Lấy tháng theo định dạng YYYY-MM
         acc[month] = (acc[month] || 0) + order.totalPrice;
         return acc;
       }, {});
@@ -86,16 +88,18 @@ const AdminDashBoard = () => {
   });
 
   const dailyRevenue = calculateDailyRevenue(orders);
-  const dailyCategories = Object.keys(dailyRevenue); // Danh sách các ngày
-  const dailyData = Object.values(dailyRevenue); // Danh sách doanh thu theo ngày
+  const dailyCategories = Object.keys(dailyRevenue).sort(
+    (a, b) => new Date(a) - new Date(b)
+  ); // Sort dates
+  const dailyData = dailyCategories.map((date) => dailyRevenue[date]);
 
   const monthlyRevenue = calculateMonthlyRevenue(orders);
-  const monthlyCategories = Object.keys(monthlyRevenue); // Danh sách các tháng
-  const monthlyData = Object.values(monthlyRevenue); // Danh sách doanh thu theo tháng
+  const monthlyCategories = Object.keys(monthlyRevenue).sort(); // Sort months (YYYY-MM format is already sortable)
+  const monthlyData = monthlyCategories.map((month) => monthlyRevenue[month]); // Map sorted months to their corresponding revenue
 
   const yearlyRevenue = calculateYearlyRevenue(orders);
-  const yearlyCategories = Object.keys(yearlyRevenue); // Danh sách các năm
-  const yearlyData = Object.values(yearlyRevenue); // Danh sách doanh thu theo năm
+  const yearlyCategories = Object.keys(yearlyRevenue).sort((a, b) => a - b); // Sort years numerically
+  const yearlyData = yearlyCategories.map((year) => yearlyRevenue[year]); // Map sorted years to their corresponding revenue
 
   const getChartData = () => {
     switch (filter) {
@@ -308,7 +312,7 @@ const AdminDashBoard = () => {
     },
 
     tooltip: {
-      theme: "dark", // Giao diện tối
+      theme: "light", // Giao diện tối
       y: {
         formatter: function (value) {
           return value.toLocaleString("vi-VN") + " VNĐ"; // Hiển thị tiền tệ

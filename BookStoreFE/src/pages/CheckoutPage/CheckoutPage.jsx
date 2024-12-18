@@ -171,7 +171,7 @@ const CheckoutPage = () => {
                 checked={deliveryMethod === "fast"}
                 value="FAST"
               >
-                FAST Giao hàng tiết kiệm
+                J&T Express
               </Radio>
               <Radio
                 onChange={handleDeliveryCheckboxChange}
@@ -179,7 +179,7 @@ const CheckoutPage = () => {
                 value="GO_JEK"
                 id="gojek"
               >
-                GO_JEK Giao hàng tiết kiệm
+                Giao hàng tiết kiệm
               </Radio>
             </Radio.Group>
           </Card>

@@ -306,6 +306,7 @@ const OrderDetails = () => {
               </div>
               <Modal
                 title="Xác nhận đơn hàng"
+                mask ={false}
                 open={openUpdate}
                 onOk={() => handleOkUpdate(currentOrderUpdate._id)}
                 confirmLoading={confirmLoadingUpdate}

@@ -138,7 +138,7 @@ console.log('data',data)
             height="203px"
             width="203px"
           />
-          <h1>Văn phòng phẩm doly</h1>
+          <h1>Văn phòng phẩm DoLy</h1>
         </WapperContainerRight>
       </div>
     </div>

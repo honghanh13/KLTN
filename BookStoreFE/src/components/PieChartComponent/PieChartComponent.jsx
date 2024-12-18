@@ -4,7 +4,7 @@ import { convertDataChart } from "../../utils";
 
 const PieChartComponent = (props) => {
   // Thống kê theo tên sản phẩm
-  const data = convertDataChart(props?.data, "name"); // [{ name: "Gundam", value: 70 }, ...]
+  const data = convertDataChart(props?.data, "type"); // [{ name: "Gundam", value: 70 }, ...]
   const chartLabels = data.map((item) => item.name); // Lấy danh sách tên sản phẩm
   const chartSeries = data.map((item) => item.value); // Lấy số liệu tương ứng (CountInStock)
   console.log("props?.data", props?.data);

@@ -75,7 +75,7 @@ const HeaderComponent = ({isHiddenSearch = false, isHiddenCart = false}) => {
         <Col span={5}>
           
           <WrappertextHeader style={{ cursor: "pointer" }}  onClick={() => navigate("/") }>
-            Văn phòng phẩm doli
+            Văn phòng phẩm DoLy
           </WrappertextHeader>
         </Col>
         {!isHiddenSearch && (

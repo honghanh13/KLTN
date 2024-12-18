@@ -19,7 +19,6 @@ const createOrder = (newOrder) => {
       discountPrice,
       email,
     } = newOrder;
-    console.log('newOrder',newOrder)
 
     try {
       // Sử dụng bulkWrite để cập nhật sản phẩm
@@ -169,6 +168,7 @@ const cancelOrderDetails = (id, data) => {
 
       // Start updating product stock and selled count
       const promises = data.map(async (orderItem) => {
+        console.log("orderItem",orderItem);
         const productData = await Product.findOneAndUpdate(
           {
             _id: orderItem.product,
@@ -183,13 +183,13 @@ const cancelOrderDetails = (id, data) => {
           { new: true }
         );
 
-        // if (!productData) {
-        //   return {
-        //     status: "ERR",
-        //     message: `Sản phẩm với ID ${orderItem.product} không tồn tại hoặc số tồn không đủ`,
-        //     id: orderItem.product,
-        //   };
-        // }
+        if (!productData) {
+          return {
+            status: "ERR",
+            message: `Sản phẩm với ID ${orderItem.product} không tồn tại hoặc số tồn không đủ`,
+            id: orderItem.product,
+          };
+        }
       });
 
       const results = await Promise.all(promises);

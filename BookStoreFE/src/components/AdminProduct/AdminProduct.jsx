@@ -477,7 +477,7 @@ const AdminProduct = () => {
             rules={[
               {
                 required: true,
-                message: "Hãy phân loại món ăn!",
+                message: "Hãy phân loại sản phẩm!",
               },
             ]}
           >
@@ -496,7 +496,7 @@ const AdminProduct = () => {
               rules={[
                 {
                   required: true,
-                  message: "Hãy phân loại món ăn!",
+                  message: "Hãy phân loại sản phẩm!",
                 },
               ]}
             >
@@ -600,7 +600,7 @@ const AdminProduct = () => {
             rules={[
               {
                 required: true,
-                message: "Hãy thêm hình ảnh cho món ăn!",
+                message: "Hãy thêm hình ảnh cho sản phẩm!",
               },
             ]}
           >
@@ -689,7 +689,7 @@ const AdminProduct = () => {
             rules={[
               {
                 required: true,
-                message: "Hãy phân loại món ăn!",
+                message: "Hãy phân loại sản phẩm!",
               },
             ]}
           >
@@ -793,7 +793,7 @@ const AdminProduct = () => {
             rules={[
               {
                 required: true,
-                message: "Hãy thêm hình ảnh cho món ăn!",
+                message: "Hãy thêm hình ảnh cho sản phẩm!",
               },
             ]}
           >
@@ -834,7 +834,7 @@ const AdminProduct = () => {
       </Drawer>
 
       <Modal
-        title="Xóa món ăn"
+        title="Xóa sản phẩm"
         open={isModalOpenDelete}
         onCancel={handleCancelDelete}
         onOk={handleDeleteProduct}
